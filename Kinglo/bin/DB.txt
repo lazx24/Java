@@ -1,0 +1,11 @@
+oracle：
+driverClass:oracle.jdbc.driver.OracleDriver
+url:jdbc:oracle:thin:@10.80.10.180:1521:zjhc(数据库名称)
+
+mysql:
+driverClass:com.mysql.jdbc.Driver
+url:jdbc:mysql://localhost/ebudget(数据库名称)
+
+sqlserver:
+driverClass:com.microsoft.jdbc.sqlserver.SQLServerDriver
+url:jdbc:microsoft:sqlserver://localhost:1433;DatabaseName=test(数据库名称)
