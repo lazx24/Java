@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
-import com.coscon.shipsuite.common.util.compare.CompositeComparator;
+
+import com.common.util.compare.CompositeComparator;
 import com.test.Student;
 
 public class CompositeComparatorTest {

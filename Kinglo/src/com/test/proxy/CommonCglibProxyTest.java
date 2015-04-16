@@ -2,7 +2,7 @@ package com.test.proxy;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.proxy.CommonCglibProxy;
+import com.common.proxy.CommonCglibProxy;
 import com.test.Student;
 
 public class CommonCglibProxyTest {

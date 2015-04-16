@@ -1,7 +1,7 @@
 package com.test.util.zip;
 
-import com.coscon.shipsuite.common.util.generic.DateUtil;
-import com.coscon.shipsuite.common.util.zip.ArchiveUtil;
+import com.common.util.generic.DateUtil;
+import com.common.util.zip.ArchiveUtil;
 import java.io.File;
 import org.junit.Test;
 

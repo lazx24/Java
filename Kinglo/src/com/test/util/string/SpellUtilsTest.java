@@ -2,8 +2,8 @@ package com.test.util.string;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.ArrayUtil;
-import com.coscon.shipsuite.common.util.string.SpellUtils;
+import com.common.util.generic.ArrayUtil;
+import com.common.util.string.SpellUtils;
 
 public class SpellUtilsTest {
 

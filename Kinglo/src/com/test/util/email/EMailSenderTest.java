@@ -1,10 +1,10 @@
 package com.test.util.email;
 
-import com.coscon.shipsuite.common.util.email.EMailBody;
-import com.coscon.shipsuite.common.util.email.EMailColor;
-import com.coscon.shipsuite.common.util.email.EMailField;
-import com.coscon.shipsuite.common.util.email.EMailSender;
-import com.coscon.shipsuite.common.util.hardware.SystemUtil;
+import com.common.util.email.EMailBody;
+import com.common.util.email.EMailColor;
+import com.common.util.email.EMailField;
+import com.common.util.email.EMailSender;
+import com.common.util.hardware.SystemUtil;
 
 import java.io.File;
 import java.util.LinkedHashMap;

@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.permissions.User;
-import com.coscon.shipsuite.common.util.bean.BeanUtil;
-import com.coscon.shipsuite.common.util.string.StringUtil;
+import com.common.permissions.User;
+import com.common.util.bean.BeanUtil;
+import com.common.util.string.StringUtil;
 import com.test.Student;
 import com.test.Teacher;
 

@@ -10,10 +10,10 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.file.FileUtil;
-import com.coscon.shipsuite.common.util.generic.DateUtil;
-import com.coscon.shipsuite.common.util.string.StringUtil;
-import com.coscon.shipsuite.common.util.zip.ZipUtil;
+import com.common.util.file.FileUtil;
+import com.common.util.generic.DateUtil;
+import com.common.util.string.StringUtil;
+import com.common.util.zip.ZipUtil;
 
 public class ZipUtilTest {
     @Test

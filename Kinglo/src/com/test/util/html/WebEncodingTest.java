@@ -6,7 +6,7 @@ import java.net.URL;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.html.WebEncoding;
+import com.common.util.html.WebEncoding;
 
 public class WebEncodingTest {
 

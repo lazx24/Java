@@ -5,7 +5,7 @@ import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.string.IdGenerator;
+import com.common.util.string.IdGenerator;
 
 public class IdGeneratorTest {
     @Before

@@ -15,8 +15,8 @@ import javax.imageio.ImageIO;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.file.FileUtil;
-import com.coscon.shipsuite.common.util.file.PDFUtil;
+import com.common.util.file.FileUtil;
+import com.common.util.file.PDFUtil;
 
 public class PdfUtilTest {
     

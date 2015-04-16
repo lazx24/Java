@@ -2,7 +2,7 @@ package com.test.collection;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.Queue;
+import com.common.util.generic.Queue;
 
 public class QueueTest {
 

@@ -2,7 +2,7 @@ package com.test.serializable;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.serializable.SerializeUtil;
+import com.common.util.serializable.SerializeUtil;
 import com.test.Student;
 
 public class SerializeUtilTest {

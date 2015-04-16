@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.coscon.shipsuite.common.util.generic.Queue;
+import com.common.util.generic.Queue;
 /**
  * 实现一个支持通配符的基于广度优先算法的文件查找器
  */

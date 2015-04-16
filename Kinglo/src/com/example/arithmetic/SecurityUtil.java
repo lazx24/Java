@@ -3,7 +3,7 @@ package com.example.arithmetic;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-import com.coscon.shipsuite.common.util.string.StringUtil;
+import com.common.util.string.StringUtil;
 
 /**
  * 加解密工具类

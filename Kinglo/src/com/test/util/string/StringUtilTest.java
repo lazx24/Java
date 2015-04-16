@@ -6,8 +6,8 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.ArrayUtil;
-import com.coscon.shipsuite.common.util.string.StringUtil;
+import com.common.util.generic.ArrayUtil;
+import com.common.util.string.StringUtil;
 
 public class StringUtilTest {
 

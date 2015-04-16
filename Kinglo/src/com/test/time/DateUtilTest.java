@@ -7,7 +7,7 @@ import java.util.Date;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.DateUtil;
+import com.common.util.generic.DateUtil;
 
 public class DateUtilTest {
 

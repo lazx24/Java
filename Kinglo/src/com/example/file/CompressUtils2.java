@@ -14,7 +14,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import com.coscon.shipsuite.common.util.file.FileUtil;
+import com.common.util.file.FileUtil;
 
 /**
  * 对文件、输出流提供压缩、解压操作的工具类

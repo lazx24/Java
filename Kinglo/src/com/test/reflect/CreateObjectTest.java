@@ -2,7 +2,7 @@ package com.test.reflect;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.CreateObject;
+import com.common.util.generic.CreateObject;
 import com.test.Student;
 
 public class CreateObjectTest {

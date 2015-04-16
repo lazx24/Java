@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.html.JsonUtil;
+import com.common.util.html.JsonUtil;
 import com.test.Student;
 
 public class JsonUtilTest {

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.html.HtmlUtil;
+import com.common.util.html.HtmlUtil;
 
 public class HtmlUtilTest {
 

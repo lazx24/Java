@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.proxy.HibernateProxyUtil;
+import com.common.proxy.HibernateProxyUtil;
 import com.test.Student;
 
 public class HibernateProxyUtilTest {

@@ -1,13 +1,9 @@
 package com.test.util.zip;
 
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
-import com.coscon.shipsuite.common.util.zip.ZipMultiDirectoryCompress;
+import com.common.util.zip.ZipMultiDirectoryCompress;
 
 public class ZipMultiDirectoryCompressTest {
 
@@ -19,7 +15,7 @@ public class ZipMultiDirectoryCompressTest {
     @Test
     public void testZipStringStringCollectionOfString() {
 	List<String> list=new ArrayList<String>();
-	list.add("aaa.txt");
+	list.add("D:\\archive\\aaa.txt");
 	ZipMultiDirectoryCompress.zip("D:\\archive", "D:\\zoujianhua3.zip", list);
     }
 }

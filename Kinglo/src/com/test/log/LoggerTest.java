@@ -2,10 +2,10 @@ package com.test.log;
 
 import org.apache.log4j.Level;
 
-import com.coscon.shipsuite.common.log.DynamicLog4j;
-import com.coscon.shipsuite.common.log.ISystemLogger;
-import com.coscon.shipsuite.common.log.LoggerFactory;
-import com.coscon.shipsuite.common.util.file.PropertyLoader;
+import com.common.log.DynamicLog4j;
+import com.common.log.ISystemLogger;
+import com.common.log.LoggerFactory;
+import com.common.util.file.PropertyLoader;
 
 public class LoggerTest {
 

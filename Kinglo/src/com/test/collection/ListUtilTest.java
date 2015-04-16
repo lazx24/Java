@@ -8,8 +8,8 @@ import java.util.Set;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.ArrayUtil;
-import com.coscon.shipsuite.common.util.generic.ListUtil;
+import com.common.util.generic.ArrayUtil;
+import com.common.util.generic.ListUtil;
 import com.test.Student;
 
 public class ListUtilTest {

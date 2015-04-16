@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 
-import com.coscon.shipsuite.common.util.string.SystemUtil;
+import com.common.util.string.SystemUtil;
 
 /**
  * 将内容追加到文件尾部

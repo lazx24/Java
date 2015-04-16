@@ -36,7 +36,7 @@ public class GetFileInfo {
 	public static void main(String[] args) {
 		//用文件路径新建一个文件对象。路径可以是绝对路径也可以是相对路径
 		//传入的参数被当作为文件的抽象路径
-		File file = new File("D:\\51CTO下载-Java常用工具类");
+		File file = new File("D:\\系统软件\\DG8Setup_1363Beta.exe");
 		getFileInfos(file);
 	}
 }

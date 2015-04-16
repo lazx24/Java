@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.ArrayUtil;
+import com.common.util.generic.ArrayUtil;
 import com.test.Student;
 
 public class ArrayUtilTest {

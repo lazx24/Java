@@ -1,16 +1,12 @@
 package com.test.util.zip;
 
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.junit.Test;
-
-import com.coscon.shipsuite.common.util.file.ServiceFile;
-import com.coscon.shipsuite.common.util.zip.Zipper;
+import com.common.util.file.ServiceFile;
+import com.common.util.zip.Zipper;
 
 public class ZipperTest {
 

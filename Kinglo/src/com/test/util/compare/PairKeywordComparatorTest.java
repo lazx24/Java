@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
-import com.coscon.shipsuite.common.util.compare.PairKeyword;
-import com.coscon.shipsuite.common.util.compare.PairKeywordComparator;
+
+import com.common.util.compare.PairKeyword;
+import com.common.util.compare.PairKeywordComparator;
 
 public class PairKeywordComparatorTest {
 

@@ -7,8 +7,8 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.bean.GenericsUtil;
-import com.coscon.shipsuite.common.util.string.StringUtil;
+import com.common.util.bean.GenericsUtil;
+import com.common.util.string.StringUtil;
 import com.test.RedDog;
 
 public class GenericsUtilTest {

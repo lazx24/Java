@@ -2,7 +2,7 @@ package com.test.util.string;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.string.PathTool;
+import com.common.util.string.PathTool;
 
 public class PathToolTest {
 

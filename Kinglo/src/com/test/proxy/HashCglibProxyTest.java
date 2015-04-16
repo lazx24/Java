@@ -4,7 +4,7 @@ import static org.junit.Assert.fail;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.proxy.HashCglibProxy;
+import com.common.proxy.HashCglibProxy;
 import com.test.Student;
 
 public class HashCglibProxyTest {

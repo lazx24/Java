@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 
 import org.junit.Test;
 
-import com.coscon.shipsuite.common.util.generic.DecimalUtil;
+import com.common.util.generic.DecimalUtil;
 
 public class DecimalUtilTest {
 
