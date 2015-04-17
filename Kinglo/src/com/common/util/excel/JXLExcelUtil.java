@@ -6,7 +6,7 @@ import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import com.common.util.validator.ValidUtil;
+
 import jxl.Cell;
 import jxl.CellType;
 import jxl.Sheet;
@@ -24,6 +24,9 @@ import jxl.write.WritableFont;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
+
+import com.common.enums.ExcelCellType;
+import com.common.util.validator.ValidUtil;
 
 public class JXLExcelUtil<T> {
 	/**************写Excel相关参数****************/
@@ -60,9 +63,9 @@ public class JXLExcelUtil<T> {
 					T t = classes.newInstance();
 					Method[] methods = classes.getMethods();
 					for(Method method:methods){
-					    if(method.getName(),equals()){
-						
-					    }
+//					    if(method.getName(),equals()){
+//						
+//					    }
 					}
 					if(cells[l].getType()==CellType.NUMBER_FORMULA){
 						

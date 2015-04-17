@@ -40,11 +40,6 @@ public class ValidUtil {
     private static final String REGEX_SIMPLE_PHONE = "^1[\\d]{10}$";
     
     /**
-     * 中文正则表达式
-     */
-    private static final String REGEX_CHINESE = "^[\u0391-\uFFE5]+$";
-    
-    /**
      * 简体中文的正则表达式。
      */
     private static final String REGEX_SIMPLE_CHINESE = "^[\u4E00-\u9FA5]+$";
@@ -371,23 +366,5 @@ public class ValidUtil {
      */
     public static boolean isEnNumSymbol(String symbol) {
 	return matches(REGEX_SYMBOL,symbol);
-    }
-    
-    /**
-     * 判断是否是中文 包含简体和繁体
-     * @param chinese
-     * @return
-     */
-    public static boolean isChinese(String chinese){
-	return matches(REGEX_CHINESE,chinese);
-    }
-    
-    /**
-     * 判断是否是正常的日期字符串
-     * @param date
-     * @return
-     */
-    private static boolean isNormalDateFormat(String date){
-	return false;
     }
 }

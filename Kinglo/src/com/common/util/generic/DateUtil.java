@@ -18,22 +18,30 @@ import com.common.enums.RepeatEnums;
 import com.common.util.string.StringUtil;
 
 /**
- * 日期辅助类
  * 
- * @author zoujianhua
- * @time 2014-10-22
- * @version 1.0
+ * 类的描述:日期辅助类
+ * 创建时间:2015-4-17
+ * 创建人:邹建华
  */
 public class DateUtil {
-
-    public static final String COMPLEX_DATE_FORMAT = "yyyy-MM-dd HH: mm: ss";
-    private static final FastDateFormat complexDateFormatter = FastDateFormat
-	    .getInstance("yyyy-MM-dd HH:mm:ss");
+    
+    /**
+     * YYYY-MM-DD
+     */
     public static final String SIMPLE_DATE_FORMAT = "yyyy-MM-dd";
+    
+    /**
+     * YYYY-MM-DD HH:MM:SS
+     */
+    public static final String DEFAULT_DATE_FORMAT ="yyyy-MM-dd HH:mm:ss";
+    
+//    public static final String 
+    
+    
     public static final String DAY_HOURS_FORMAT = "D H";
     private static final FastDateFormat simpleDateFormatter = FastDateFormat
 	    .getInstance("yyyy-MM-dd");
-    private static final String TIMESTAMP_DATE_FORMAT = "yyyyMMddHHmmssSSS";
+    
     private static final FastDateFormat timeStampFormatter = FastDateFormat
 	    .getInstance("yyyyMMddHHmmssSSS");
 
@@ -48,101 +56,120 @@ public class DateUtil {
     private static final int[] MAX_DAY_OF_MONTH = new int[] { 31, 28, 31, 30,
 	    31, 30, 31, 31, 30, 31, 30, 31 };
 
-    public static final int YEAR = Calendar.YEAR;
+    public static final int YEAR = Calendar.YEAR;//年份
 
-    public static final int MONTH = Calendar.MONTH;
+    public static final int MONTH = Calendar.MONTH;//月份 从0开始
 
-    public static final int DAY = Calendar.DATE;
+    public static final int DAY = Calendar.DATE;//天
 
-    public static final int HOUR = Calendar.HOUR;
+    public static final int HOUR = Calendar.HOUR;//小时
 
-    public static final int MINUTE = Calendar.MINUTE;
+    public static final int MINUTE = Calendar.MINUTE;//分钟
 
-    public static final int DAY_OF_MONTH = Calendar.DAY_OF_MONTH;// 得到某一天
+    public static final int DAY_OF_MONTH = Calendar.DAY_OF_MONTH;// 得到某月中的当前日期
 
-    public static final int HOUR_OF_DAY = Calendar.HOUR_OF_DAY;// 得到小时
+    public static final int HOUR_OF_DAY = Calendar.HOUR_OF_DAY;// 得到某天的当前小时
 
     public static final int SECOND = Calendar.SECOND;// 得到秒钟
+    
+    public static final int MILLISECOND=Calendar.MILLISECOND;//毫秒
+    
+    public static final int DATE = Calendar.DATE;//获取日期的天
 
-    public static final int DAY_OF_WEEK = Calendar.DAY_OF_WEEK;
+    public static final int DAY_OF_WEEK = Calendar.DAY_OF_WEEK;//获取星期中的第几天 1表示星期天 5表示星期六 以此类推
+    
+    public static final int WEEK_OF_YEAR = Calendar.WEEK_OF_YEAR;//获取一年的第几周
+    
+    public static final int WEEK_OF_MONTH = Calendar.WEEK_OF_MONTH;//获取一月中的第几周
+    
+    public static final int DAY_OF_WEEK_IN_MONTH = Calendar.DAY_OF_WEEK_IN_MONTH; 
+    
+    public static final int ZONE_OFFSET = Calendar.ZONE_OFFSET;//GMT时区偏移量
 
-    public static final String DEFAULT_FORMAT = "yyyy-MM-dd HH:mm:ss";
-
-    private static Calendar calendar = null;
+    public static void getCalendarInfo(Date date){
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	System.out.println("YEAR:"+calendar.get(YEAR));
+	System.out.println("MONTH:"+calendar.get(MONTH));
+	System.out.println("DAY:"+calendar.get(DAY));
+	System.out.println("HOUR:"+calendar.get(HOUR));
+	System.out.println("MINUTE:"+calendar.get(MINUTE));
+	System.out.println("DAY_OF_MONTH:"+calendar.get(DAY_OF_MONTH));
+	System.out.println("HOUR_OF_DAY:"+calendar.get(HOUR_OF_DAY));
+	System.out.println("SECOND:"+calendar.get(SECOND));
+	System.out.println("MILLISECOND:"+calendar.get(MILLISECOND));
+	System.out.println("DAY_OF_WEEK:"+calendar.get(DAY_OF_WEEK));
+	System.out.println("WEEK_OF_YEAR:"+calendar.get(WEEK_OF_YEAR));
+	System.out.println("WEEK_OF_MONTH:"+calendar.get(WEEK_OF_MONTH));
+	System.out.println("DATE:"+calendar.get(DATE));
+	System.out.println("DAY_OF_WEEK_IN_MONTH:"+calendar.get(DAY_OF_WEEK_IN_MONTH));
+	System.out.println("ZONE_OFFSET:"+calendar.get(ZONE_OFFSET));
+    }
+    
 
     /**
-     * 比较两日期对象中的小时和分钟部分的大小.
-     * 
-     * @param date
-     *            日期对象1, 如果为 <code>null</code> 会以当前时间的日期对象代替
-     * @param anotherDate
-     *            日期对象2, 如果为 <code>null</code> 会以当前时间的日期对象代替
-     * @return 如果日期对象1大于日期对象2, 则返回大于0的数; 反之返回小于0的数; 如果两日期对象相等, 则返回0.
+     * 比较两日期对象中的小时和分钟部分的大小
+     * 如果输入时间为空 会启用与当前时间比较
+     * @param date		时间
+     * @param anotherDate	时间
+     * @return			2:表示参数为空 1表示第一个日期大  0表示相等 -1表示第二个日期大
      */
     public static int compareHourAndMinute(Date date, Date anotherDate) {
-	if (date == null) {
-	    date = new Date();
+	if(null == date || null == anotherDate){
+	    return 2;
 	}
-
-	if (anotherDate == null) {
-	    anotherDate = new Date();
-	}
-
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	int hourOfDay1 = cal.get(Calendar.HOUR_OF_DAY);
-	int minute1 = cal.get(Calendar.MINUTE);
-
-	cal.setTime(anotherDate);
-	int hourOfDay2 = cal.get(Calendar.HOUR_OF_DAY);
-	int minute2 = cal.get(Calendar.MINUTE);
-
-	if (hourOfDay1 > hourOfDay2) {
+	
+	Calendar time = Calendar.getInstance();
+	time.setTime(date);
+	int timeHour = time.get(HOUR);
+	int timeMinute = time.get(MINUTE);
+	
+	Calendar anotherTime = Calendar.getInstance();
+	anotherTime.setTime(anotherDate);
+	int anotherHour = anotherTime.get(HOUR);
+	int anotherMinute = anotherTime.get(MINUTE);
+	
+	if(timeHour > anotherHour){
 	    return 1;
-	} else if (hourOfDay1 == hourOfDay2) {
-	    // 小时相等就比较分钟
-	    return minute1 > minute2 ? 1 : (minute1 == minute2 ? 0 : -1);
-	} else {
-	    return -1;
+	}else if(timeHour == anotherHour){
+	    if(timeMinute == anotherMinute){
+		return 0;
+	    }else if(timeMinute > anotherMinute){
+		return 1;
+	    }
 	}
+	return -1;
+	
     }
 
     /**
-     * 比较两日期对象的大小, 忽略秒, 只精确到分钟.
-     * 
-     * @param date
-     *            日期对象1, 如果为 <code>null</code> 会以当前时间的日期对象代替
-     * @param anotherDate
-     *            日期对象2, 如果为 <code>null</code> 会以当前时间的日期对象代替
-     * @return 如果日期对象1大于日期对象2, 则返回大于0的数; 反之返回小于0的数; 如果两日期对象相等, 则返回0.
+     * 比较两日期对象的大小,忽略秒,只精确到分钟
+     * @param date		时间
+     * @param anotherDate	时间	
+     * @return			2:表示参数为空 1表示第一个日期大  0表示相等 -1表示第二个日期大
      */
     public static int compareIgnoreSecond(Date date, Date anotherDate) {
-	if (date == null) {
-	    date = new Date();
+	if(null == date || null == anotherDate){
+	    return 2;
 	}
 
-	if (anotherDate == null) {
-	    anotherDate = new Date();
-	}
+	Calendar calendar = Calendar.getInstance();
+	calendar.setTime(date);
+	calendar.set(SECOND, 0);
+	calendar.set(MILLISECOND, 0);
+	date = calendar.getTime();
 
-	Calendar cal = Calendar.getInstance();
-	cal.setTime(date);
-	cal.set(Calendar.SECOND, 0);
-	cal.set(Calendar.MILLISECOND, 0);
-	date = cal.getTime();
-
-	cal.setTime(anotherDate);
-	cal.set(Calendar.SECOND, 0);
-	cal.set(Calendar.MILLISECOND, 0);
-	anotherDate = cal.getTime();
+	calendar.setTime(anotherDate);
+	calendar.set(SECOND, 0);
+	calendar.set(MILLISECOND, 0);
+	anotherDate = calendar.getTime();
 
 	return date.compareTo(anotherDate);
     }
 
     /**
      * 取得今天的最后一个时刻
-     * 
-     * @return 今天的最后一个时刻
+     * @return 当前日期 23:59:59
      */
     public static Date currentEndDate() {
 	return getEndDate(new Date());
@@ -150,19 +177,16 @@ public class DateUtil {
 
     /**
      * 取得今天的第一个时刻
-     * 
-     * @return 今天的第一个时刻
+     * @return 当前日期 00:00:00
      */
     public static Date currentStartDate() {
 	return getStartDate(new Date());
     }
 
     /**
-     * 获取某天的起始时间, e.g. 2005-10-01 00:00:00.000
-     * 
-     * @param date
-     *            日期对象
-     * @return 该天的起始时间
+     * 获取某天的起始时间 精确到毫秒 00:00:00:000
+     * @param date	时间
+     * @return		当前日期 00:00:00:000
      */
     public static Date getStartDate(Date date) {
 	if (date == null) {
@@ -181,74 +205,24 @@ public class DateUtil {
     }
 
     /**
-     * 根据某星期几的英文名称来获取该星期几的中文数. <br>
-     * e.g. <li>monday -> 一</li> <li>sunday -> 日</li>
-     * 
-     * @param englishWeekName
-     *            星期的英文名称
-     * @return 星期的中文数
-     */
-    public static String getChineseWeekNumber(String englishWeekName) {
-	if ("monday".equalsIgnoreCase(englishWeekName)) {
-	    return "一";
-	}
-
-	if ("tuesday".equalsIgnoreCase(englishWeekName)) {
-	    return "二";
-	}
-
-	if ("wednesday".equalsIgnoreCase(englishWeekName)) {
-	    return "三";
-	}
-
-	if ("thursday".equalsIgnoreCase(englishWeekName)) {
-	    return "四";
-	}
-
-	if ("friday".equalsIgnoreCase(englishWeekName)) {
-	    return "五";
-	}
-
-	if ("saturday".equalsIgnoreCase(englishWeekName)) {
-	    return "六";
-	}
-
-	if ("sunday".equalsIgnoreCase(englishWeekName)) {
-	    return "日";
-	}
-
-	return null;
-    }
-
-    /**
-     * 根据指定的年, 月, 日等参数获取日期对象.
-     * 
-     * @param year
-     *            年
-     * @param month
-     *            月
-     * @param date
-     *            日
-     * @return 对应的日期对象
+     *  根据指定的年,月,日等参数获取日期对象
+     * @param year	年份
+     * @param month	月份
+     * @param date	天
+     * @return		日期
      */
     public static Date getDate(int year, int month, int date) {
 	return getDate(year, month, date, 0, 0);
     }
 
     /**
-     * 根据指定的年, 月, 日, 时, 分等参数获取日期对象.
-     * 
-     * @param year
-     *            年
-     * @param month
-     *            月
-     * @param date
-     *            日
-     * @param hourOfDay
-     *            时(24小时制)
-     * @param minute
-     *            分
-     * @return 对应的日期对象
+     * 根据指定的年,月,日,时,分等参数获取日期对象
+     * @param year	年份
+     * @param month	月份
+     * @param date	天
+     * @param hourOfDay	时
+     * @param minute	分
+     * @return		日期
      */
     public static Date getDate(int year, int month, int date, int hourOfDay,
 	    int minute) {
@@ -256,21 +230,14 @@ public class DateUtil {
     }
 
     /**
-     * 根据指定的年, 月, 日, 时, 分, 秒等参数获取日期对象.
-     * 
-     * @param year
-     *            年
-     * @param month
-     *            月
-     * @param date
-     *            日
-     * @param hourOfDay
-     *            时(24小时制)
-     * @param minute
-     *            分
-     * @param second
-     *            秒
-     * @return 对应的日期对象
+     * 根据指定的年,月,日,时,分,秒等参数获取日期对象
+     * @param year	年份
+     * @param month	月份
+     * @param date	天
+     * @param hourOfDay	时
+     * @param minute	分
+     * @parm  second    秒
+     * @return		日期
      */
     public static Date getDate(int year, int month, int date, int hourOfDay,
 	    int minute, int second) {
@@ -282,11 +249,9 @@ public class DateUtil {
     }
 
     /**
-     * 获取某天的结束时间, e.g. 2005-10-01 23:59:59.999
-     * 
-     * @param date
-     *            日期对象
-     * @return 该天的结束时间
+     *  获取某天的结束时间 2013-12-12 23:59:59:999 精确到毫秒
+     * @param date	时间
+     * @return		日期
      */
     public static Date getEndDate(Date date) {
 
@@ -306,13 +271,10 @@ public class DateUtil {
     }
 
     /**
-     * 取得一个月最多的天数
-     * 
-     * @param year
-     *            年份
-     * @param month
-     *            月份，0表示1月，依此类推
-     * @return 最多的天数
+     * 获取一个月最后一天的日期
+     * @param year	年份
+     * @param month	月份  0表示1月
+     * @return		日期
      */
     public static int getMaxDayOfMonth(int year, int month) {
 	if (month == 1 && isLeapYear(year)) {
@@ -323,33 +285,26 @@ public class DateUtil {
 
     /**
      * 判断是否是闰年
-     * 
-     * @param year
-     *            年份
-     * @return 是true，否则false
+     * @param year	年份
+     * @return		结果
      */
-    public static boolean isLeapYear(int year) {
-	Calendar calendar = Calendar.getInstance();
-	return ((GregorianCalendar) calendar).isLeapYear(year);
-    }
+    
 
     /**
-     * 取得一年中的第几周。
-     * 
-     * @param date
-     * @return
+     * 取得一年中的第几周
+     * @param date	日期
+     * @return		周
      */
     public static int getWeekOfYear(Date date) {
 	Calendar cal = Calendar.getInstance();
 	cal.setTime(date);
-	return cal.get(Calendar.WEEK_OF_YEAR);
+	return cal.get(WEEK_OF_YEAR);
     }
 
     /**
-     * 获取上周的指定星期的日期。
-     * 
-     * @param dayOfWeek
-     *            星期几，取值范围是 {@link Calendar#MONDAY} - {@link Calendar#SUNDAY}
+     * 获取上周的指定星期的日期
+     * @param dayOfWeek	1-7之间的数字
+     * @return		日期
      */
     public static Date getDateOfPreviousWeek(int dayOfWeek) {
 	if (dayOfWeek > 7 || dayOfWeek < 1) {
@@ -360,10 +315,9 @@ public class DateUtil {
     }
 
     /**
-     * 获取本周的指定星期的日期。
-     * 
-     * @param dayOfWeek
-     *            星期几，取值范围是 {@link Calendar#MONDAY} - {@link Calendar#SUNDAY}
+     * 获取本周的指定星期的日期
+     * @param dayOfWeek 1-7之间的数字
+     * @return		日期
      */
     public static Date getDateOfCurrentWeek(int dayOfWeek) {
 	if (dayOfWeek > 7 || dayOfWeek < 1) {
@@ -374,10 +328,9 @@ public class DateUtil {
     }
 
     /**
-     * 获取下周的指定星期的日期。
-     * 
-     * @param dayOfWeek
-     *            星期几，取值范围是 {@link Calendar#MONDAY} - {@link Calendar#SUNDAY}
+     * 获取下周的指定星期的日期
+     * @param dayOfWeek	1-7之间的数字
+     * @return		日期
      */
     public static Date getDateOfNextWeek(int dayOfWeek) {
 	if (dayOfWeek > 7 || dayOfWeek < 1) {
@@ -386,143 +339,120 @@ public class DateUtil {
 
 	return getDateOfRange(dayOfWeek, 7);
     }
-
+    
     private static Date getDateOfRange(int dayOfWeek, int dayOfRange) {
-	Calendar cal = Calendar.getInstance();
-	cal.set(Calendar.DAY_OF_WEEK, dayOfWeek);
-	cal.set(Calendar.DATE, cal.get(Calendar.DATE) + dayOfRange + 1);
-	cal.set(Calendar.HOUR_OF_DAY, 0);
-	cal.set(Calendar.MINUTE, 0);
-	cal.set(Calendar.SECOND, 0);
-	cal.set(Calendar.MILLISECOND, 0);
-	return cal.getTime();
+	Calendar calendar = Calendar.getInstance();
+	calendar.set(DAY_OF_WEEK, dayOfWeek);
+	calendar.set(DATE, calendar.get(DATE) + dayOfRange + 1);
+	calendar.set(HOUR_OF_DAY, 0);
+	calendar.set(MINUTE, 0);
+	calendar.set(SECOND, 0);
+	calendar.set(MILLISECOND, 0);
+	return calendar.getTime();
     }
 
     /**
-     * 功能描述：返回年份
-     * 
-     * @param date
-     *            Date 日期
-     * @return 返回年份
+     * 返回年份
+     * @param date 日期
+     * @return	        年份
      */
     public static int getYear(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(YEAR);
     }
 
     /**
-     * 功能描述：返回月份
-     * 
-     * @param date
-     *            Date 日期
-     * @return 返回月份
+     * 返回月份
+     * @param date	日期
+     * @return		月份
      */
     public static int getMonth(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(MONTH) + 1;
     }
 
     /**
-     * 功能描述：返回日份
-     * 
-     * @param date
-     *            Date 日期
-     * @return 返回日份
+     * 返回日
+     * @param date	日期
+     * @return		日
      */
     public static int getDay(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(DAY_OF_MONTH);
     }
 
     /**
-     * 功能描述：返回小时
-     * 
-     * @param date
-     *            日期
-     * @return 返回小时
+     * 返回小时
+     * @param date	日期
+     * @return		小时
      */
     public static int getHour(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(HOUR_OF_DAY);
     }
 
     /**
-     * 功能描述：返回分钟
-     * 
-     * @param date
-     *            日期
-     * @return 返回分钟
+     * 返回分钟
+     * @param date	日期
+     * @return		分钟
      */
     public static int getMinute(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(MINUTE);
     }
 
     /**
      * 返回秒钟
-     * 
-     * @param date
-     *            Date 日期
-     * @return 返回秒钟
+     * @param date	日期
+     * @return		秒钟
      */
     public static int getSecond(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.get(SECOND);
     }
 
     /**
-     * 功能描述：返回毫秒
-     * 
-     * @param date
-     *            日期
-     * @return 返回毫秒
+     * 返回毫秒
+     * @param date	日期
+     * @return		毫秒
      */
     public static long getMillis(Date date) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	calendar.setTime(date);
 	return calendar.getTimeInMillis();
     }
 
     /**
-     * 功能描述：日期相加
-     * 
-     * @param date
-     *            Date 日期
-     * @param day
-     *            int 天数
-     * @return 返回相加后的日期
+     * 添加天数返回日期
+     * @param date 日期
+     * @param day  天数
+     * @return	        日期
      */
     public static Date addDate(Date date, int day) {
-	calendar = Calendar.getInstance();
+	Calendar calendar = Calendar.getInstance();
 	long millis = getMillis(date) + ((long) day) * 24 * 3600 * 1000;
 	calendar.setTimeInMillis(millis);
 	return calendar.getTime();
     }
 
     /**
-     * 功能描述：日期相减
-     * 
-     * @param date
-     *            Date 日期
-     * @param date1
-     *            Date 日期
-     * @return 返回相减后的日期
+     * 日期相减返回天数
+     * @param date	日期
+     * @param date1	日期
+     * @return		天数
      */
-    public static int diffDate(Date date, Date date1) {
-	return (int) ((getMillis(date) - getMillis(date1)) / (24 * 3600 * 1000));
-    }
+    
 
     /**
      * 得到参数时间的这个星期的第一天的日期
-     * 
-     * @param date
-     * @return
+     * @param date	日期
+     * @return		日期
      */
     public static Date getFirstDateByWeek(Date date) {
 	Calendar now = Calendar.getInstance();
@@ -535,9 +465,8 @@ public class DateUtil {
 
     /**
      * 得到参数时间的这个星期的最后一天的日期
-     * 
-     * @param date
-     * @return
+     * @param date	日期
+     * @return		日期
      */
     public static Date getLastDateByWeek(Date date) {
 
@@ -551,76 +480,28 @@ public class DateUtil {
     }
 
     /**
-     * 得到参数时间的这个月的最后一天
-     * 
-     * @param date
-     * @return
-     */
-    public static Date getLastDateByMonth(Date date) {
-	Calendar now = Calendar.getInstance();
-	now.setTime(date);
-	now.set(Calendar.MONTH, now.get(Calendar.MONTH) + 1);
-	now.set(Calendar.DATE, 1);
-	now.set(Calendar.DATE, now.get(Calendar.DATE) - 1);
-	now.set(Calendar.HOUR, 11);
-	now.set(Calendar.MINUTE, 59);
-	now.set(Calendar.SECOND, 59);
-	return now.getTime();
-    }
-
-    /**
-     * 得到参数时间的这个月的第一天
-     * 
-     * @param date
-     * @return
-     */
-    public static Date getFirstDateByMonth(Date date) {
-
-	Calendar now = Calendar.getInstance();
-	now.setTime(date);
-	now.set(Calendar.DATE, 0);
-	now.set(Calendar.HOUR, 12);
-	now.set(Calendar.MINUTE, 0);
-	now.set(Calendar.SECOND, 0);
-	return now.getTime();
-    }
-
-    /**
      * 得到当前日期(24小时制)
-     * 
      * @return
      */
     public static String getCurrentTime() {
-	DateFormat format = new SimpleDateFormat(DEFAULT_FORMAT);
-	return format.format(new Date());
-    }
-
-    /**
-     * 得到当前日期(12小时制)
-     * 
-     * @return
-     */
-    public static String getCurrentTimeBySept() {
-	DateFormat format = new SimpleDateFormat(DEFAULT_FORMAT);
+	DateFormat format = new SimpleDateFormat(DEFAULT_DATE_FORMAT);
 	return format.format(new Date());
     }
 
     /**
      * 转换日期类型到String类型(时间格式为formatLayout)
-     * 
-     * @param date
-     * @return
+     * @param date 	日期
+     * @return		日期字符串
      */
     public static String dateToString(Date date) {
-	return dateToString(date, DEFAULT_FORMAT);
+	return dateToString(date, DEFAULT_DATE_FORMAT);
     }
 
     /**
      * 转换日期类型到String类型 自定义时间格式
-     * 
-     * @param date
-     * @param formatLayout
-     * @return
+     * @param date		日期
+     * @param formatLayout	日期格式
+     * @return			日期字符串
      */
     public static String dateToString(Date date, String formatLayout) {
 	if (null == date) {
@@ -633,21 +514,19 @@ public class DateUtil {
 
     /**
      * 转换String类型到日期类型(时间格式为formatLayout)
-     * 
-     * @param dateString
-     * @return
+     * @param dateString	日期字符串
+     * @return			日期
      * @throws ParseException
      */
     public static Date stringToDate(String dateStr) {
-	return stringToDate(dateStr, DEFAULT_FORMAT);
+	return stringToDate(dateStr, DEFAULT_DATE_FORMAT);
     }
 
     /**
      * 转换String类型到日期类型 自定义时间格式
-     * 
-     * @param dateStr
-     * @param formatLayout
-     * @return
+     * @param dateStr		日期字符串
+     * @param formatLayout	日期格式
+     * @return			日期
      * @throws ParseException
      */
     public static Date stringToDate(String dateStr, String formatLayout) {
@@ -665,10 +544,10 @@ public class DateUtil {
 
     /**
      * 在给定时间上添加或减去天数 月数 和年数
-     * 
-     * @param sign
-     *            MONTH YEAR DAY
-     * @return
+     * @param day	天数
+     * @param dateType	日期类型
+     * @param date	日期
+     * @return		日期
      */
     public static Date addDate(int day, int dateType, Date date) {
 	Calendar calendar = Calendar.getInstance();
@@ -681,21 +560,18 @@ public class DateUtil {
 
     /**
      * Date 转换格式
-     * 
-     * @param date
-     * @return
-     * @throws ParseException
+     * @param date	日期
+     * @return		日期
      */
     public static Date dateToDate(Date date) {
-	return dateToDate(date, DEFAULT_FORMAT);
+	return dateToDate(date, DEFAULT_DATE_FORMAT);
     }
 
     /**
      * Date 转换格式
-     * 
-     * @param date
-     * @param formatLayout
-     * @return
+     * @param date		日期
+     * @param formatLayout	日期格式
+     * @return			日期
      */
     public static Date dateToDate(Date date, String formatLayout) {
 	try {
@@ -712,8 +588,8 @@ public class DateUtil {
     /**
      * 比较输入日期是否在当前日期的后面
      * 
-     * @param date
-     * @return
+     * @param date 日期
+     * @return	        结果
      */
     public static boolean afterDate(Date date) {
 	return new Date().after(date);
@@ -722,26 +598,25 @@ public class DateUtil {
     /**
      * 比较输入日期是否在当前日期的前面
      * 
-     * @param date
-     * @return
+     * @param date	日期
+     * @return		结果
      */
     public static boolean beforeDate(Date date) {
 	return new Date().before(date);
     }
 
-    /**
-     * 比较第一个日期是否比第二个日期大
-     * 
-     * @param firstDate
-     * @param secondDate
-     * @return
-     */
-    public static boolean whoBig(Date firstDate, Date secondDate) {
+   /**
+    * 比较第一个日期是否比第二个日期大
+    * @param date	日期
+    * @param anotherDate日期
+    * @return		结果
+    */
+    public static boolean whoBig(Date date, Date anotherDate) {
 	boolean result = false;
-	if (null != firstDate && null == secondDate) {
+	if (null != date && null == anotherDate) {
 	    result = true;
-	} else if (null != firstDate && null != secondDate) {
-	    if (firstDate.getTime() > secondDate.getTime()) {
+	} else if (null != date && null != anotherDate) {
+	    if (date.getTime() > anotherDate.getTime()) {
 		return true;
 	    }
 	}
@@ -749,18 +624,18 @@ public class DateUtil {
     }
 
     /**
-     * 得到明天的日期
+     * 获取明天的日期
+     * @return 日期字符串
      */
     public static String nextDay() {
-	return nextDay(new Date(), DEFAULT_FORMAT);
+	return nextDay(new Date(), DEFAULT_DATE_FORMAT);
     }
 
     /**
      * 得到明天的日期
-     * 
-     * @param dateStr
-     * @param formatLayout
-     * @return
+     * @param dateStr 		日期字符串
+     * @param formatLayout	日期格式
+     * @return			日期字符串
      */
     public static String nextDay(String dateStr, String formatLayout) {
 	if (StringUtil.isNullOrEmpty(dateStr)) {
@@ -770,10 +645,10 @@ public class DateUtil {
     }
 
     /**
-     * 得到日期的明天日期
-     * 
-     * @param date
-     * @return
+     * 得到明天的日期
+     * @param date		日期
+     * @param formatLayout	日期格式
+     * @return			日期字符串
      */
     public static String nextDay(Date date, String formatLayout) {
 	if (date == null) {
@@ -784,76 +659,31 @@ public class DateUtil {
     }
 
     /**
-     * 获得当前日期 精确到毫秒数
-     * 
-     * @param args
+     * 获取两个日期之间的相隔天数  
+     * @param date		日期
+     * @param anotherDate	日期
+     * @return			天数  -1表示参数为NULL
      */
-    public static String getCurrentTimeMillions() {
-	SimpleDateFormat simple = new SimpleDateFormat("yyyyMMddhhmmssSSS");
-	return simple.format(new Date());
-    }
-
-    /**
-     * 返回两个日期之间隔了多少天(第一个日期比第二个日期大多少天) 返回-1表示参数存在null
-     * 
-     * @param firstDate
-     * @param secondDate
-     * @return
-     */
-    public static int compareToDay(Date firstDate, Date secondDate) {
-	int day = -1;
-	if (null != firstDate && null != secondDate) {
-	    Calendar calendar = Calendar.getInstance();
-
-	    calendar.setTime(firstDate);
-	    long first = calendar.getTimeInMillis();
-
-	    calendar.setTime(secondDate);
-	    long second = calendar.getTimeInMillis();
-
-	    int firstDay = millonToDay(first);
-	    int secondDay = millonToDay(second);
-
-	    day = Math.abs(firstDay - secondDay);
-	}
-	return day;
-    }
+    
 
     /**
      * 得到两个字符串之间的相隔天数
-     * 
-     * @param s1
-     * @param s2
-     * @return
+     * @param dateStr		日期字符串
+     * @param anoterDateStr	日期字符串
+     * @return			天数 
      */
-    public static int compareToDay(String firstStr, String secondStr) {
-	Date firstDate = stringToDate(firstStr, "yyyy-MM-dd");
-	Date secondDate = stringToDate(secondStr, "yyyy-MM-dd");
+    public static int compareToDay(String dateStr, String anoterDateStr) {
+	Date firstDate = stringToDate(dateStr, "yyyy-MM-dd");
+	Date secondDate = stringToDate(anoterDateStr, "yyyy-MM-dd");
 	return compareToDay(firstDate, secondDate);
     }
 
-    /**
-     * 返回两个日期之间隔了多少天
-     * 
-     * @param date1
-     *            日期1
-     * @param date2
-     *            日期2
-     * @return date1比date2早返回负数，否则返回正数
-     */
-    public static int compareToDay2(Date firstDate, Date secondDate) {
-	int i = (int) (firstDate.getTime() - secondDate.getTime())
-		/ (24 * 3600 * 1000);
-	return i;
-    }
-
-    /**
-     * 返回两个日期之间隔了多少分钟
-     * 
-     * @param firstStr
-     * @param secondStr
-     * @return
-     */
+   /**
+    * 返回两个日期之间隔了多少分钟
+    * @param firstStr
+    * @param secondStr
+    * @return
+    */
     public static long compareToMinute(String firstStr, String secondStr) {
 	try {
 	    Date firstDate = stringToDate(firstStr);
@@ -1058,36 +888,7 @@ public class DateUtil {
      * @param d2
      * @return
      */
-    public static List<HashMap<String, Object>> betweenDate(String d1, String d2) {
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-	try {
-	    Calendar cal1 = Calendar.getInstance();
-	    Calendar cal2 = Calendar.getInstance();
-	    cal1.setTime(sdf.parse(d1));
-	    cal2.setTime(sdf.parse(d2));
-
-	    int monthnum = (cal2.get(Calendar.YEAR) - cal1.get(Calendar.YEAR))
-		    * 12 + cal2.get(Calendar.MONTH) - cal1.get(Calendar.MONTH);
-	    for (int i = 0; i < monthnum; i++) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("begindate", sdf.format(cal1.getTime()));
-		cal1.add(Calendar.DATE, cal1.getActualMaximum(Calendar.DATE)
-			- cal1.get(Calendar.DATE));
-		map.put("enddate", sdf.format(cal1.getTime()));
-		list.add(map);
-		cal1.add(Calendar.MONTH, 1);
-		cal1.add(Calendar.DATE, 1 - cal1.get(Calendar.DATE));
-	    }
-	    HashMap<String, Object> map = new HashMap<String, Object>();
-	    map.put("begindate", sdf.format(cal1.getTime()));
-	    map.put("enddate", d2);
-	    list.add(map);
-	} catch (Exception e) {
-	    return list;
-	}
-	return list;
-    }
+    
 
     /**
      * 获取某月所有日期
@@ -1096,23 +897,7 @@ public class DateUtil {
      * @return
      * @throws ParseException
      */
-    public static List<String> dayList(String date) throws ParseException {
-	DateFormat format = new SimpleDateFormat("yyyy-MM");
-	Calendar time = Calendar.getInstance();
-	time.clear();
-	Date d1 = format.parse(date);
-	time.setTime(d1);
-	int day = time.getActualMaximum(Calendar.DAY_OF_MONTH);
-	DateFormat formats = new SimpleDateFormat("yyyy-MM-dd");
-	List<String> list = new ArrayList<String>();
-	for (int i = 1; i <= day; i++) {
-	    String s = format.format(d1) + "-" + i;
-	    Date sss = formats.parse(s);
-	    String dd = formats.format(sss);
-	    list.add(dd);
-	}
-	return list;
-    }
+    
 
     public static Calendar getCalendarWithoutHourMinSec(Date date) {
 	Calendar cal = Calendar.getInstance();
@@ -1635,7 +1420,11 @@ public class DateUtil {
     public static Date getTwoThousandYear() {
 	return parseSimpleStringDate("2000-01-01");
     }
-
+   /**
+    * 
+    * @param min
+    * @return
+    */
     public static double miniute2Hour(long min) {
 	return min / 60L + min % 60L / 60.0D;
     }

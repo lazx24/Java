@@ -168,4 +168,10 @@ public class DateUtilTest
     Date day = DateUtil.addDay(new Date(), -1);
     System.out.println(DateUtil.getComplexDateString(DateUtil.getMiddleNightDate(day)));
   }
+  
+  @Test
+  public void test(){
+      DateUtil.getCalendarInfo(new Date());
+      System.out.println();
+  }
 }

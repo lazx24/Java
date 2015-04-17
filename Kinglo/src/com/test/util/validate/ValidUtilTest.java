@@ -25,6 +25,6 @@ public class ValidUtilTest {
     
     @Test
     public void testisChinese(){
-	System.out.println(ValidUtil.isSimpleChinese("你妹的繁體"));
+	System.out.println(ValidUtil.isSimpleChinese("你妹的繁體￥￥￥…………………………＆＆＆"));
     }
 }
