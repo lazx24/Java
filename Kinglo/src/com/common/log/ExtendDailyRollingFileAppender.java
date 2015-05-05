@@ -1,10 +1,5 @@
 package com.common.log;
 
-import com.common.util.file.FileUtil;
-import com.common.util.file.PropertyLoader;
-import com.common.util.generic.DateUtil;
-import com.common.util.string.StringUtil;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -13,8 +8,14 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 import org.apache.log4j.DailyRollingFileAppender;
 import org.apache.log4j.spi.LoggingEvent;
+
+import com.common.util.date.DateUtil;
+import com.common.util.file.FileUtil;
+import com.common.util.file.PropertyLoader;
+import com.common.util.string.StringUtil;
 
 public class ExtendDailyRollingFileAppender extends DailyRollingFileAppender {
     private static final ReentrantReadWriteLock locker = new ReentrantReadWriteLock();
@@ -130,11 +131,11 @@ public class ExtendDailyRollingFileAppender extends DailyRollingFileAppender {
 	locker.readLock().lock();
 	if ((this.maxBackupIndex > 0)
 		&& (!this.dateLogMap.keySet().contains(
-			DateUtil.getSimpleDateString(new Date())))) {
+			DateUtil.dateToString(new Date())))) {
 	    locker.readLock().unlock();
 	    locker.writeLock().lock();
 	    try {
-		String dateString = DateUtil.getSimpleDateString(new Date());
+		String dateString = DateUtil.dateToString(new Date());
 		this.dateLogMap.put(dateString, Boolean.valueOf(false));
 		removeHistoryLog(dateString);
 	    } finally {

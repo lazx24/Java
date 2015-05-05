@@ -2,7 +2,7 @@ package com.test.reflect;
 
 import org.junit.Test;
 
-import com.common.util.generic.CreateObject;
+import com.common.util.bean.CreateObject;
 import com.test.Student;
 
 public class CreateObjectTest {

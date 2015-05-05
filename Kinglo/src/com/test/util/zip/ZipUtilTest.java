@@ -10,8 +10,8 @@ import java.util.Date;
 
 import org.junit.Test;
 
+import com.common.util.date.DateUtil;
 import com.common.util.file.FileUtil;
-import com.common.util.generic.DateUtil;
 import com.common.util.string.StringUtil;
 import com.common.util.zip.ZipUtil;
 
@@ -26,34 +26,6 @@ public class ZipUtilTest {
 	System.out.println(new String(bytes));
     }
     
-    @Test
-    public void compressFile() {
-	String[] filenameArray = {
-		"InboundFreighttList20120810101607601[1].pdf",
-		"InboundFreighttList20120925161225048[1].pdf", "J1844101.pdf",
-		"merged.pdf", "merged.pdf",
-		"ObCorrectAdvice20120917134213629[1].pdf",
-		"ObCorrectAdvice20120917134219651[1].pdf" };
-	for (String filename : filenameArray) {
-	    String filePath = "d:\\temp\\" + filename;
-	    String zipFilename = filePath + ".zip";
-	    byte[] bytes = FileUtil.readBytesFromFile(filePath);
-
-	    System.out.println(String.format(
-		    "Start compress %s at %s.",
-		    new Object[] { filename,
-			    DateUtil.getComplexDateString(new Date()) }));
-	    byte[] zipBytes = ZipUtil.compress(bytes);
-
-	    System.out.println(String.format(
-		    "End compress %s at %s.",
-		    new Object[] { filename,
-			    DateUtil.getComplexDateString(new Date()) }));
-
-	    FileUtil.writeBytesToFile(zipBytes, zipFilename);
-	}
-    }
-
     @Test
     public void compressString() {
 	String html = FileUtil.readFile(

@@ -1,9 +1,11 @@
 package com.test.util.zip;
 
-import com.common.util.generic.DateUtil;
-import com.common.util.zip.ArchiveUtil;
 import java.io.File;
+
 import org.junit.Test;
+
+import com.common.util.date.DateUtil;
+import com.common.util.zip.ArchiveUtil;
 
 public class ArchiveUtilTest {
     @Test
@@ -16,7 +18,7 @@ public class ArchiveUtilTest {
     @Test
     public void archvieEndDate() {
 	ArchiveUtil.archive("D:\\archive", "d:\\aaa",
-		DateUtil.parseSimpleStringDate("2012-5-22"));
+		DateUtil.stringFormatToDate("2012-5-22",DateUtil.DAY_DATE_FORMAT));
     }
     
     @Test

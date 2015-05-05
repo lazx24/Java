@@ -25,10 +25,10 @@ import org.apache.tools.zip.ZipEntry;
 import org.apache.tools.zip.ZipFile;
 
 import com.common.context.ApplicationContextUtil;
+import com.common.util.date.DateUtil;
 import com.common.util.file.FileUtil;
 import com.common.util.file.ServiceFile;
 import com.common.util.generic.CollectionUtil;
-import com.common.util.generic.DateUtil;
 
 /**
  * 
@@ -397,7 +397,7 @@ public final class Zipper {
 	    String path = tempDir + file.getFilename();
 	    fileList.add(new File(path));
 	}
-	String destZipFilename = tempDir + DateUtil.getTimeStampDateString()
+	String destZipFilename = tempDir + DateUtil.dateFormatToString(new Date(), DateUtil.MILLIONS_DATE_FORMAT)
 		+ ".zip";
 	File[] fileArray = new File[fileList.size()];
 	zip((File[]) fileList.toArray(fileArray), destZipFilename, archiveMode);
@@ -414,7 +414,7 @@ public final class Zipper {
     public static List<ServiceFile> unZip2ServiceFile(byte[] data,
 	    String... filenames) throws IOException {
 	String tempDir = ApplicationContextUtil.getTempDirectory();
-	String zipFilename = tempDir + DateUtil.getTimeStampDateString()
+	String zipFilename = tempDir + DateUtil.dateFormatToString(new Date(),DateUtil.MILLIONS_DATE_FORMAT)
 		+ ".zip";
 	return unZip2ServiceFile(zipFilename, filenames);
     }

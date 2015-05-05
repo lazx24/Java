@@ -113,52 +113,6 @@ public class CollectionUtilTest {
     }
 
     @Test
-    public void maxMin() {
-	RootObject r1 = new RootObject();
-	RootObject r2 = new RootObject();
-	RootObject r3 = new RootObject();
-	RootObject r4 = new RootObject();
-
-	r1.setId("1");
-	r1.setName("上海万升国际代理有限公司");
-	r1.setNick(null);
-	r1.setDatetime(new Date());
-
-	r2.setId("2");
-	r2.setName("上海万硕国际代理有限公司");
-	r2.setNick("nick3");
-	r2.setDatetime(DateUtil.addDay(new Date(), -1));
-
-	r3.setId("9");
-	r3.setName("上海东菱国际货物运输代理有限公司");
-	r3.setNick("nick2");
-	r3.setDatetime(DateUtil.addDay(new Date(), 1));
-
-	r4.setId("3");
-	r4.setName("上海互洋国际货代理有限公司");
-	r4.setNick("nick2");
-	r4.setDatetime(new Date());
-
-	List<RootObject> rootList = new ArrayList();
-	rootList.add(r1);
-	rootList.add(r2);
-	rootList.add(r3);
-	rootList.add(r4);
-
-	RootObject rootMax = (RootObject) CollectionUtil.max(rootList,
-		"datetime");
-
-	System.out.println(rootMax.getId() + "-" + rootMax.getName() + "-"
-		+ rootMax.getDatetime());
-
-	RootObject rootMin = (RootObject) CollectionUtil.min(rootList,
-		"datetime");
-
-	System.out.println(rootMin.getId() + "-" + rootMin.getName() + "-"
-		+ rootMin.getDatetime());
-    }
-    
-    @Test
     public void compareContents(){
 	Student s=new Student();
 	Student s2=new Student();

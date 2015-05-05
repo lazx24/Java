@@ -8,7 +8,12 @@ public final class PropertyLoader extends AbstractPropertyLoader {
     static {
 	defaultPropertyDir = "";
     }
-
+    
+    /**
+     * 获取键的值
+     * @param key 键
+     * @return	  Value
+     */
     public static String getDefaultProperty(String key) {
 	if (key == null) {
 	    throw new RuntimeException("Can not load NULL key!");
@@ -19,7 +24,13 @@ public final class PropertyLoader extends AbstractPropertyLoader {
 	}
 	return null;
     }
-
+    
+    /**
+     * 获取键的值 如果不存在 取默认值
+     * @param key	键
+     * @param defaultVal默认值
+     * @return		Value
+     */
     public static String getDefaultProperty(String key, String defaultVal) {
 	if (key == null) {
 	    throw new RuntimeException("Can not load NULL key!");

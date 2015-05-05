@@ -5,7 +5,7 @@ import java.util.Locale;
 public final class LocaleUtil {
     /**
      * 根据langeuage获取Locale
-     * @param language
+     * @param language 语言
      * @return
      */
     public static Locale getLocale(String language) {
@@ -15,11 +15,5 @@ public final class LocaleUtil {
 	    }
 	}
 	return null;
-    }
-    
-    public static void main(String[] args) {
-	for(Locale locale:Locale.getAvailableLocales()){
-	    System.out.println(locale.toString());
-	}
     }
 }

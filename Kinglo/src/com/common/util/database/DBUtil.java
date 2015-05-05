@@ -1,49 +1,67 @@
 package com.common.util.database;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.List;
+
+import org.apache.commons.lang.NullArgumentException;
+
+import com.common.enums.DatabaseDriverType;
 import com.common.util.string.StringUtil;
 import com.common.util.validator.ValidUtil;
 
 public class DBUtil {
+    
     /**
-     * 根据driverClass获取数据库类型
-     * 
-     * @param driverClass
-     * @return
+     * 根据DB类型获取驱动类
+     * @param dbType  	数据库类型
+     * @return	      	驱动类
      */
-    public static String getDatabaseType(String driverClass) {
-	if (!StringUtil.isNullOrEmpty(driverClass)) {
-	    if (driverClass.toLowerCase().contains("mysql")) {
-		return "mysql";
-	    } else if (driverClass.toLowerCase().contains("oracle")) {
-		return "oracle";
-	    } else if (driverClass.toLowerCase().contains("sqlserver")) {
-		return "sqlserver";
+    public static String getDriverClass(String dbType){
+	if(StringUtil.isNullOrEmpty(dbType)){
+	    throw new NullArgumentException("dbType is null!");
+	}
+	List<DatabaseDriverType> databaseDriverTypeList = DatabaseDriverType.getAll();
+	for(DatabaseDriverType type:databaseDriverTypeList){
+	    if(type.getKey().equals(dbType.toLowerCase())){
+		return type.getValue();
 	    }
 	}
-	return "";
+	return null;
     }
-
-    /**
-     * 根据url获取数据库名称
-     * 
-     * @param url
-     * @param driverClass
-     * @return
-     */
-    public static String getDatabaseName(String url, String driverClass) {
-	String databaseName = "";
-	if (!StringUtil.isNullOrEmpty(url)) {
-	    String databaseType = getDatabaseType(driverClass);
-	    if (databaseType.equals("mysql")) {
-		databaseName = url.substring(url.lastIndexOf("/") + 1);
-	    } else if (databaseType.equals("sqlserver")) {
-		databaseName = url.substring(url.lastIndexOf("=") + 1);
-	    } else if (databaseType.equals("oracle")) {
-		databaseName = url.substring(url.lastIndexOf(":") + 1);
+    
+    /************************************关闭连接***********************************/
+    public static void close(Object...params){
+	if(null!=params && params.length > 0){
+	    for (int i = 0; i < params.length; i++) {
+		try {
+		    if(params[i] instanceof ResultSet){
+			ResultSet rs = (ResultSet)params[i];
+			rs.close();
+		    }
+		    if(params[i] instanceof Statement){
+			Statement statement = (Statement)params[i];
+			statement.close();
+		    }
+		    if(params[i] instanceof Connection){
+			Connection conn = (Connection)params[i];
+			conn.close();
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		    continue;
+		}
 	    }
 	}
-	return databaseName;
     }
+    /************************************关闭连接***********************************/
+    
+    /************************************关闭连接***********************************/
+    
+    
+    
+    /************************************关闭连接***********************************/
 
     /**
      * 主用用于数据库列名转属性名

@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
 
-import com.common.util.generic.DateUtil;
 import com.common.util.string.StringUtil;
 
 /**
@@ -51,8 +50,8 @@ public abstract class JdbcUtil {
 		sql.append("'");
 	    } else if (arg instanceof java.util.Date) {
 		sql.append("'");
-		sql.append(DateUtil.dateToDate((java.util.Date) arg,
-			"yyyy-MM-dd HH:mm:ss.SSS"));
+//		sql.append(DateUtil.dateToDate((java.util.Date) arg,
+//			"yyyy-MM-dd HH:mm:ss.SSS"));
 		sql.append("'");
 	    } else {
 		sql.append(arg);

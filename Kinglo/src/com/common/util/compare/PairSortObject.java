@@ -1,10 +1,9 @@
 package com.common.util.compare;
 
-import com.common.util.generic.DateUtil;
-
 import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
+import com.common.util.date.DateUtil;
 
 public final class PairSortObject<K, V> implements
 	Comparator<PairSortObject<K, V>>, Comparable {
@@ -58,10 +57,10 @@ public final class PairSortObject<K, V> implements
 
     private String getSortString(Object obj) {
 	if ((obj instanceof Date)) {
-	    return DateUtil.getComplexDateString((Date) obj);
+	    return DateUtil.dateToString((Date) obj);
 	}
 	if ((obj instanceof Calendar)) {
-	    return DateUtil.getComplexDateString((Calendar) obj);
+	    return DateUtil.calendarToString((Calendar) obj);
 	}
 	if (obj == null) {
 	    return "";

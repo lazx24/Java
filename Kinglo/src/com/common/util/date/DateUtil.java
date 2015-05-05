@@ -1,6 +1,5 @@
 package com.common.util.date;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,21 +11,22 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Map.Entry;
+
+import com.common.enums.RepeatEnums;
 
 public class DateUtil {
     
-    private static final String MONTH_DATE_FORMAT = "yyyy-MM";
+    public static final String MONTH_DATE_FORMAT = "yyyy-MM";
     
-    private static final String DAY_DATE_FORMAT = "yyyy-MM-dd";
+    public static final String DAY_DATE_FORMAT = "yyyy-MM-dd";
     
-    private static final String HOUR_DATE_FORMAT ="yyyy-MM-dd HH";
+    public static final String HOUR_DATE_FORMAT ="yyyy-MM-dd HH";
     
-    private static final String MINUTE_DATE_FORMAT = "yyyy-MM-dd HH:mm";
+    public static final String MINUTE_DATE_FORMAT = "yyyy-MM-dd HH:mm";
     
-    private static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     
-    private static final String MILLIONS_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss:SSS";
+    public static final String MILLIONS_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss:SSS";
     
     public static final int YEAR = Calendar.YEAR;//年份
 
@@ -143,11 +143,6 @@ public class DateUtil {
 	Calendar calendar = Calendar.getInstance();
 	calendar.set(year, month, day, hour, minute, second);
 	return calendar.getTime();
-    }
-    
-    public static boolean isNoramlDateFormat(String dateStr){
-	
-	return true;
     }
     
     /**
@@ -354,6 +349,357 @@ public class DateUtil {
 	    dateList.add(time);
 	}
 	return dateList;
+    }
+    
+    /**
+     * 毫秒数转换成天数
+     */
+    public static int millonToDay(long millions) {
+	long day = millions / (1000 * 60 * 60 * 24);
+	return new Double(Math.ceil(day)).intValue();
+    }
+    
+    /**
+     * 得到日期的交集范围
+     * @param firstStartDate 	第一个开始的日期
+     * @param firstEndtDate	第一个结束的日期
+     * @param secondStartDate	第二个开始的日期
+     * @param secondEndDate	第二个结束的日期
+     * @return			交集范围
+     */
+    public static String[] getRangeDate(String firstStartDate,
+	    String firstEndtDate, String secondStartDate, String secondEndDate) {
+	String[] date = new String[2];
+	String begindate = "";
+	String enddate = "";
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	try {
+	    Calendar begin1 = Calendar.getInstance();
+	    Calendar end1 = Calendar.getInstance();
+	    Calendar begin2 = Calendar.getInstance();
+	    Calendar end2 = Calendar.getInstance();
+	    begin1.setTime(sdf.parse(firstStartDate));
+	    end1.setTime(sdf.parse(firstEndtDate));
+	    begin2.setTime(sdf.parse(secondStartDate));
+	    end2.setTime(sdf.parse(secondEndDate));
+	    if ((begin2.getTime().getTime() >= end1.getTime().getTime() && end2
+		    .getTime().getTime() >= end1.getTime().getTime())
+		    || (begin2.getTime().getTime() <= begin1.getTime()
+			    .getTime() && end2.getTime().getTime() <= begin1
+			    .getTime().getTime())) {
+		date[0] = "";
+		return date;
+	    }
+
+	    if (begin2.getTime().getTime() >= begin1.getTime().getTime()) {
+		begindate = sdf.format(begin2.getTime());
+	    } else {
+		begindate = sdf.format(begin1.getTime());
+	    }
+	    if (end2.getTime().getTime() >= end1.getTime().getTime()) {
+		enddate = sdf.format(end1.getTime());
+	    } else {
+		enddate = sdf.format(end2.getTime());
+	    }
+
+	    if (!begindate.equals("") && !enddate.equals("")) {
+		date[0] = begindate;
+		date[1] = enddate;
+	    }
+	} catch (Exception e) {
+
+	}
+	return date;
+    }
+    
+    /**
+     * 分钟转换为小时数
+     * @param min	分钟
+     * @return		小时数
+     */
+    public static double miniute2Hour(long min) {
+	return min / 60L + min % 60L / 60.0D;
+    }
+    
+    /**
+     * 转换日期为 yyyy-MM-dd 00:00:00:00
+     * @param date
+     * @return
+     */
+    public static Date transQueryFromDate(Date date) {
+	Calendar calendar = GregorianCalendar.getInstance();
+	calendar.setTime(date);
+	calendar.set(11, 0);
+	calendar.set(12, 0);
+	calendar.set(13, 0);
+	calendar.set(14, 0);
+	return calendar.getTime();
+    }
+    
+    /**
+     * 转换日期为yyyy-MM-dd 23:59:59:500
+     * @param date
+     * @return
+     */
+    public static Date transQueryToDate(Date date) {
+	Calendar calendar = GregorianCalendar.getInstance();
+	calendar.setTime(date);
+	calendar.set(11, 23);
+	calendar.set(12, 59);
+	calendar.set(13, 59);
+	calendar.set(14, 500);
+	return calendar.getTime();
+    }
+    
+    /**
+     * 转换日期为Calendar
+     * @param date
+     * @return
+     */
+    public static Calendar transDateToCalendar(Date date) {
+	Calendar calendar = GregorianCalendar.getInstance();
+	calendar.setTime(date);
+	return calendar;
+    }
+    
+    /**
+     * 获取下一个调度日期
+     * @param currentScheduleDate	开始调度日期
+     * @param repeatType		枚举类型
+     * @return				日期
+     */
+    public static Date getNextScheduleDate(Date currentScheduleDate,
+	    RepeatEnums repeatType) {
+	Date now = new Date();
+	Calendar nextScheduleCalendar = Calendar.getInstance();
+	if (currentScheduleDate != null)
+	    nextScheduleCalendar.setTime(currentScheduleDate);
+	Date nextScheduleDate = nextScheduleCalendar.getTime();
+
+	if (nextScheduleDate.before(now)) {
+	    while (nextScheduleDate.before(now)) {
+		if ((repeatType == null) || (repeatType == RepeatEnums.ONCE))
+		    return now;
+		if (repeatType == RepeatEnums.HOURLY) {
+		    Date lastDate = addMinute(now, -60);
+		    if (nextScheduleDate.before(lastDate)) {
+			return now;
+		    }
+		    nextScheduleDate = addMinute(nextScheduleDate, 60);
+		} else if (repeatType == RepeatEnums.DAILY) {
+		    Date lastDate = addDay(now, -1);
+		    if (nextScheduleDate.before(lastDate)) {
+			return now;
+		    }
+		    nextScheduleDate = addDay(nextScheduleDate, 1);
+		} else if (repeatType == RepeatEnums.WEEKLY) {
+		    Date lastDate = addWeek(now, -1);
+		    if (nextScheduleDate.before(lastDate)) {
+			return now;
+		    }
+		    nextScheduleDate = addWeek(nextScheduleDate, 1);
+		} else if (repeatType == RepeatEnums.MONTHLY) {
+		    Date lastDate = addMonth(now, -1);
+		    if (nextScheduleDate.before(lastDate)) {
+			return now;
+		    }
+		    nextScheduleDate = addMonth(nextScheduleDate, 1);
+		} else if (repeatType == RepeatEnums.YEARLY) {
+		    Date lastDate = addYear(now, -1);
+		    if (nextScheduleDate.before(lastDate)) {
+			return now;
+		    }
+		    nextScheduleDate = addYear(nextScheduleDate, 1);
+		}
+	    }
+	}
+	return nextScheduleDate;
+    }
+    
+    /**
+     * 获取下一个工作日
+     * @param dt	日期
+     * @param amount	星期几
+     * @return
+     */
+    public static Date getNextWorkingDay(Date dt, int amount) {
+	if (amount == 0)
+	    return dt;
+	Calendar calendar = transDateToCalendar(dt);
+	calendar = transDateToCalendar(dt);
+	int inteval;
+	if (amount > 0)
+	    inteval = 1;
+	else {
+	    inteval = -1;
+	}
+	for (int i = 0; i < Math.abs(amount);) {
+	    calendar.add(7, inteval);
+	    int weekDay = calendar.get(7);
+	    if ((weekDay != 7) && (weekDay != 1))
+		i++;
+	}
+	return calendar.getTime();
+    }
+    
+    /**
+     * 增加天数
+     * @param date
+     * @param days
+     * @return
+     */
+    public static Date addDay(Date date, int days) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(5, days);
+	return gc.getTime();
+    }
+    
+    /**
+     * 添加月数
+     * @param date
+     * @param months
+     * @return
+     */
+    public static Date addMonth(Date date, int months) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(2, months);
+	return gc.getTime();
+    }
+    
+    /**
+     * 添加星期
+     * @param date
+     * @param weeks
+     * @return
+     */
+    public static Date addWeek(Date date, int weeks) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(3, weeks);
+	return gc.getTime();
+    }
+    
+    /**
+     * 添加年数
+     * @param date
+     * @param years
+     * @return
+     */
+    public static Date addYear(Date date, int years) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(1, years);
+	return gc.getTime();
+    }
+    
+    /**
+     * 添加分钟
+     * @param date
+     * @param minutes
+     * @return
+     */
+    public static Date addMinute(Date date, int minutes) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(12, minutes);
+	return gc.getTime();
+    }
+    
+    /**
+     * 添加小时
+     * @param date
+     * @param hours
+     * @return
+     */
+    public static Date addHour(Date date, int hours) {
+	Calendar gc = Calendar.getInstance();
+	gc.setTime(date);
+	gc.add(10, hours);
+	return gc.getTime();
+    }
+    
+    /**
+     * 是否是日期
+     * @param dateString 日期字符串
+     * @return		  结果
+     */
+    public static boolean isDate(String dateString) {
+	if (stringToDate(dateString) != null) {
+	    try {
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		dateFormat.setLenient(false);
+
+		return dateFormat.parse(dateString) != null;
+	    } catch (Exception e) {
+		return false;
+	    }
+	}
+
+	return false;
+    }
+    
+    /**
+     * 是否是日期
+     * @param dateTimeString	日期字符串
+     * @return			结果
+     */
+    public static boolean isDateTime(String dateTimeString) {
+	if (stringToDate(dateTimeString) != null) {
+	    try {
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+			"yyyy-MM-dd HH:mm:ss");
+		dateFormat.setLenient(false);
+
+		return dateFormat.parse(dateTimeString) != null;
+	    } catch (Exception e) {
+		return false;
+	    }
+	}
+
+	return false;
+    }
+    
+    /**
+     * 获取最大的日期
+     * @param dateArray	日期数组
+     * @return		最大的日期
+     */
+    public static Date max(Date[] dateArray) {
+	if ((dateArray == null) || (dateArray.length == 0)) {
+	    return null;
+	}
+	Date maxDate = stringToDate("1900-01-01");
+
+	for (int i = 0; i < dateArray.length; i++) {
+	    if ((dateArray[i] != null) && (maxDate.before(dateArray[i]))) {
+		maxDate = dateArray[i];
+	    }
+	}
+	return maxDate;
+    }
+    
+    /**
+     * 获取最小的日期
+     * @param dateArray	日期数组
+     * @return		最小的日期
+     */
+    public static Date min(Date[] dateArray) {
+	if ((dateArray == null) || (dateArray.length == 0)) {
+	    return null;
+	}
+	Date minDate = dateArray[0];
+	for (int i = 0; i < dateArray.length; i++) {
+	    if ((dateArray[i] != null) && (minDate.after(dateArray[i]))) {
+		minDate = dateArray[i];
+	    }
+	}
+	return minDate;
+    }
+    
+    public static String calendarToString(Calendar calendar){
+	return dateToString(calendar.getTime());
     }
     
     public static void main(String[] args) {

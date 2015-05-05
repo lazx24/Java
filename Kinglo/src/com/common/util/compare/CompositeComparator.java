@@ -5,12 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * 用来解决字段的组合排列问题的比较器
  * 
- * 用了组合（Compositor）模式：把一些具有不同功能的类组合起来成一个类或者数组,
- * 然后通过调用某个方法来循环数组中的所有元素，最后返回用户所需要的结果
- * @author zou
- * 2015-1-27
+ * 类的描述:用来解决字段的组合排列问题的比较器
+ * 创建时间:2015-5-5
+ * 创建人:邹建华	
+ * @param <T>
  */
 public class CompositeComparator<T> implements Comparator<T> {
 

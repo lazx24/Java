@@ -1,11 +1,12 @@
 package com.common.util.zip;
 
-import com.common.util.generic.DateUtil;
-
 import java.io.File;
 import java.util.Date;
 import java.util.Locale;
+
 import org.apache.tools.ant.types.selectors.DateSelector;
+
+import com.common.util.date.DateUtil;
 /**
  * 压缩类
  * 类的描述: 此压缩文件类压缩成功后会删除被压缩的文件
@@ -93,9 +94,8 @@ public final class ArchiveUtil {
 	DateSelector dateSelector = new DateSelector();
 	dateSelector.setWhen(DateSelector.TimeComparisons.BEFORE);
 
-	dateSelector.setDatetime(DateUtil.getDateString(
-		endDate == null ? new Date() : endDate, "MM/dd/yyyy HH:mm a",
-		Locale.US));
+	dateSelector.setDatetime(DateUtil.dateFormatToString(
+		endDate == null ? new Date() : endDate, "MM/dd/yyyy HH:mm a"));
 
 	Zipper.zip(pathFilenamePattern, zipFilename, dateSelector, true);
 	return new File(zipFilename);
@@ -141,7 +141,7 @@ public final class ArchiveUtil {
 	destZipFilename
 		.append(archiveDescPath == null ? "." : archiveDescPath)
 		.append(File.separator)
-		.append(DateUtil.getDateString(new Date(), "yyyyMMddHHmmssSSS"))
+		.append(DateUtil.dateFormatToString(new Date(), "yyyyMMddHHmmssSSS"))
 		.append(".zip");
 	return destZipFilename.toString();
     }

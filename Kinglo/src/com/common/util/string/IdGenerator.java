@@ -1,10 +1,10 @@
 package com.common.util.string;
 
-import com.common.util.generic.DateUtil;
-
 import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
+
+import com.common.util.date.DateUtil;
 
 public final class IdGenerator {
     private static final AtomicLong atomicSeqContinue = new AtomicLong(0L);
@@ -55,7 +55,7 @@ public final class IdGenerator {
      */
     public static synchronized String getTimestamp(Integer seqDigit) {
 	Date timestamp = new Date();
-	String timepstampString = DateUtil.getTimeStampDateString(timestamp);
+	String timepstampString = DateUtil.dateFormatToString(timestamp,DateUtil.MILLIONS_DATE_FORMAT);
 	if ((seqDigit != null) && (seqDigit.intValue() > 0)) {
 	    if (lastTimestamp.getTime() != timestamp.getTime()) {
 		lastTimestamp = timestamp;

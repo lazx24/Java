@@ -1,9 +1,10 @@
 package com.common.util.compare;
 
 /**
- * 关键字对，用于列表排序
- * @author zou
- * 2015-1-27
+ * 
+ * 类的描述:关键字对   用于列表排序
+ * 创建时间:2015-5-5
+ * 创建人:邹建华
  */
 public class PairKeyword {
 

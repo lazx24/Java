@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.common.util.date.DateUtil;
 import com.common.util.file.FileUtil;
-import com.common.util.generic.DateUtil;
 import com.common.util.validator.ValidUtil;
 
 /**
@@ -402,7 +402,7 @@ public abstract class URLUtil {
 	if (value instanceof Boolean) {
 	    value = ((Boolean) value).booleanValue() ? "1" : "0";
 	} else if (value instanceof Date) {
-	    value = DateUtil.dateToString((Date) value, "yyyy-MM-dd");
+	    value = DateUtil.dateFormatToString((Date) value, DateUtil.DAY_DATE_FORMAT);
 	}
 
 	try {

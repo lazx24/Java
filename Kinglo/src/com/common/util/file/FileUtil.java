@@ -111,12 +111,13 @@ public class FileUtil {
 	if (!baseDir.exists() || (!baseDir.isDirectory())) {
 	    return;
 	}
+	ZipOutputStream out = null;
 	String baseDirPath = baseDir.getAbsolutePath();
 	// 目标文件
 	File targetFile = new File(targetFileName);
 	try {
 	    // 创建一个zip输出流来压缩数据并写入到zip文件
-	    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(
+	    out = new ZipOutputStream(new FileOutputStream(
 		    targetFile));
 	    if (fileName.equals("*")) {
 		// 将baseDir目录下的所有文件压缩到ZIP
@@ -132,6 +133,8 @@ public class FileUtil {
 	    out.close();
 	} catch (IOException e) {
 	    e.printStackTrace();
+	}finally{
+	    close(out);
 	}
     }
     
@@ -144,13 +147,15 @@ public class FileUtil {
 	if (!targetBaseDirName.endsWith(File.separator)) {
 	    targetBaseDirName += File.separator;
 	}
+	FileOutputStream os = null;
+	InputStream is = null;
 	try {
 	    // 根据ZIP文件创建ZipFile对象
 	    ZipFile zipFile = new ZipFile(zipFileName);
 	    ZipEntry entry = null;
 	    String entryName = null;
 	    String targetFileName = null;
-	    byte[] buffer = new byte[4096];
+	    byte[] buffer = new byte[BUFFER_SIZE];
 	    int bytes_read;
 	    // 获取ZIP文件里所有的entry
 	    Enumeration entrys = zipFile.entries();
@@ -172,19 +177,19 @@ public class FileUtil {
 		// 否则创建文件
 		File targetFile = new File(targetFileName);
 		// 打开文件输出流
-		FileOutputStream os = new FileOutputStream(targetFile);
+		os = new FileOutputStream(targetFile);
 		// 从ZipFile对象中打开entry的输入流
-		InputStream is = zipFile.getInputStream(entry);
+		is = zipFile.getInputStream(entry);
 		while ((bytes_read = is.read(buffer)) != -1) {
 		    os.write(buffer, 0, bytes_read);
 		}
-		// 关闭流
-		os.close();
-		is.close();
 	    }
 	} catch (IOException err) {
 	    System.err.println("解压缩文件失败: " + err);
 	    err.printStackTrace();
+	}finally{
+	    close(os);
+	    close(is);
 	}
     }
     
@@ -234,7 +239,7 @@ public class FileUtil {
 	FileInputStream in = null;
 	ZipEntry entry = null;
 	// 创建复制缓冲区
-	byte[] buffer = new byte[4096];
+	byte[] buffer = new byte[BUFFER_SIZE];
 	int bytes_read;
 	if (file.isFile()) {
 	    try {
@@ -249,9 +254,10 @@ public class FileUtil {
 		    out.write(buffer, 0, bytes_read);
 		}
 		out.closeEntry();
-		in.close();
 	    } catch (IOException e) {
 		e.printStackTrace();
+	    }finally{
+		close(in);
 	    }
 	}
     }
@@ -369,20 +375,8 @@ public class FileUtil {
 	} catch (Exception e) {
 	    return false;
 	} finally {
-	    if (out != null) {
-		try {
-		    out.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	    }
-	    if (in != null) {
-		try {
-		    in.close();
-		} catch (IOException e) {
-		    e.printStackTrace();
-		}
-	    }
+	    close(out);
+	    close(in);
 	}
     }
 
@@ -468,17 +462,19 @@ public class FileUtil {
      */
     public static void appendMethodByRandomAccessFile(String fileName,
 	    String content) {
+	RandomAccessFile randomFile = null;
 	try {
 	    // 打开一个随机访问文件流，按读写方式
-	    RandomAccessFile randomFile = new RandomAccessFile(fileName, "rw");
+	    randomFile = new RandomAccessFile(fileName, "rw");
 	    // 文件长度，字节数
 	    long fileLength = randomFile.length();
 	    // 将写文件指针移到文件尾。
 	    randomFile.seek(fileLength);
 	    randomFile.writeBytes(content);
-	    randomFile.close();
 	} catch (IOException e) {
 	    e.printStackTrace();
+	}finally{
+	    close(randomFile);
 	}
     }
 
@@ -489,13 +485,15 @@ public class FileUtil {
      * @param content
      */
     public static void appendMethodByFileWriter(String fileName, String content) {
+	FileWriter writer = null;
 	try {
 	    // 打开一个写文件器，构造函数中的第二个参数true表示以追加形式写文件
-	    FileWriter writer = new FileWriter(fileName, true);
+	    writer = new FileWriter(fileName, true);
 	    writer.write(content);
-	    writer.close();
 	} catch (IOException e) {
 	    e.printStackTrace();
+	}finally{
+	    close(writer);
 	}
     }
 
@@ -506,6 +504,7 @@ public class FileUtil {
      * @param content
      */
     public static void appendToNewLine(String fileName, String content) {
+	FileWriter writer = null;
 	try {
 	    String line_separator = "";
 	    if (SystemUtil.IS_OS_WINDOWS) {
@@ -515,12 +514,14 @@ public class FileUtil {
 	    } else {
 		line_separator = "\r";
 	    }
-	    FileWriter writer = new FileWriter(fileName, true);
+	    writer = new FileWriter(fileName, true);
 	    writer.write(line_separator);
 	    writer.write(content);
 	    writer.close();
 	} catch (IOException e) {
 	    e.printStackTrace();
+	}finally{
+	    close(writer);
 	}
     }
 
@@ -721,49 +722,55 @@ public class FileUtil {
      */
     public static String[] divide(String fileName, long size, String filePrefix)
 	    throws Exception {
-
+	String[] outFileNames = null;
+	FileInputStream in = null;
 	File inFile = new File(fileName);
 	if (!inFile.exists() || (!inFile.isFile())) {
 	    throw new Exception("指定文件不存在！");
 	}
-	// 获得被分割文件父文件，将来被分割成的小文件便存在这个目录下
-	File parentFile = inFile.getParentFile();
+	try {
+	 // 获得被分割文件父文件，将来被分割成的小文件便存在这个目录下
+		File parentFile = inFile.getParentFile();
 
-	// 取得文件的大小
-	long fileLength = inFile.length();
-	if (size <= 0) {
-	    size = fileLength / 2;
+		// 取得文件的大小
+		long fileLength = inFile.length();
+		if (size <= 0) {
+		    size = fileLength / 2;
+		}
+		// 取得被分割后的小文件的数目
+		int num = (fileLength % size != 0) ? (int) (fileLength / size + 1)
+			: (int) (fileLength / size);
+		// 存放被分割后的小文件名
+		outFileNames = new String[num];
+		// 输入文件流，即被分割的文件
+		in = new FileInputStream(inFile);
+
+		// 读输入文件流的开始和结束下标
+		long inEndIndex = 0;
+		int inBeginIndex = 0;
+
+		// 根据要分割的数目输出文件
+		for (int outFileIndex = 0; outFileIndex < num; outFileIndex++) {
+		    // 对于前num - 1个小文件，大小都为指定的size
+		    File outFile = new File(parentFile, inFile.getName() + outFileIndex
+			    + "." + filePrefix);
+		    // 构建小文件的输出流
+		    FileOutputStream out = new FileOutputStream(outFile);
+		    // 将结束下标后移size
+		    inEndIndex += size;
+		    inEndIndex = (inEndIndex > fileLength) ? fileLength : inEndIndex;
+		    // 从输入流中读取字节存储到输出流中
+		    for (; inBeginIndex < inEndIndex; inBeginIndex++) {
+			out.write(in.read());
+		    }
+		    out.close();
+		    outFileNames[outFileIndex] = outFile.getAbsolutePath();
+		}
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}finally{
+	    close(in);
 	}
-	// 取得被分割后的小文件的数目
-	int num = (fileLength % size != 0) ? (int) (fileLength / size + 1)
-		: (int) (fileLength / size);
-	// 存放被分割后的小文件名
-	String[] outFileNames = new String[num];
-	// 输入文件流，即被分割的文件
-	FileInputStream in = new FileInputStream(inFile);
-
-	// 读输入文件流的开始和结束下标
-	long inEndIndex = 0;
-	int inBeginIndex = 0;
-
-	// 根据要分割的数目输出文件
-	for (int outFileIndex = 0; outFileIndex < num; outFileIndex++) {
-	    // 对于前num - 1个小文件，大小都为指定的size
-	    File outFile = new File(parentFile, inFile.getName() + outFileIndex
-		    + "." + filePrefix);
-	    // 构建小文件的输出流
-	    FileOutputStream out = new FileOutputStream(outFile);
-	    // 将结束下标后移size
-	    inEndIndex += size;
-	    inEndIndex = (inEndIndex > fileLength) ? fileLength : inEndIndex;
-	    // 从输入流中读取字节存储到输出流中
-	    for (; inBeginIndex < inEndIndex; inBeginIndex++) {
-		out.write(in.read());
-	    }
-	    out.close();
-	    outFileNames[outFileIndex] = outFile.getAbsolutePath();
-	}
-	in.close();
 	return outFileNames;
     }
 
@@ -780,23 +787,34 @@ public class FileUtil {
     public static String unite(String[] fileNames, String TargetFileName)
 	    throws Exception {
 	File inFile = null;
-	// 构建文件输出流
-	File outFile = new File(TargetFileName);
-	FileOutputStream out = new FileOutputStream(outFile);
-
-	for (int i = 0; i < fileNames.length; i++) {
-	    // 打开文件输入流
-	    inFile = new File(fileNames[i]);
-	    FileInputStream in = new FileInputStream(inFile);
-	    // 从输入流中读取数据，并写入到文件数出流中
-	    int c;
-	    while ((c = in.read()) != -1) {
-		out.write(c);
+	File outFile = null;
+	FileOutputStream out = null;
+	FileInputStream in = null;
+	try {
+	    // 构建文件输出流
+	    outFile = new File(TargetFileName);
+	    out = new FileOutputStream(outFile);
+	    for (int i = 0; i < fileNames.length; i++) {
+		try {
+		    // 打开文件输入流
+		    inFile = new File(fileNames[i]);
+		    in = new FileInputStream(inFile);
+		    // 从输入流中读取数据，并写入到文件数出流中
+		    int c;
+		    while ((c = in.read()) != -1) {
+			 out.write(c);
+		    }
+		} catch (Exception e) {
+		    e.printStackTrace();
+		}finally{
+		    close(in);
+		}
 	    }
-	    in.close();
+	} catch (Exception e) {
+	    e.printStackTrace();
+	}finally{
+	    close(out);
 	}
-	out.close();
-
 	return outFile.getAbsolutePath();
     }
 
@@ -1143,12 +1161,7 @@ public class FileUtil {
 	    e.printStackTrace();
 	    return -1;
 	} finally {
-	    if (fileReader != null) {
-		try {
-		    fileReader.close();
-		} catch (IOException e1) {
-		}
-	    }
+	    close(fileReader);
 	}
     }
 
@@ -1223,12 +1236,7 @@ public class FileUtil {
 	} catch (IOException e) {
 	    throw new ShipSuiteRuntimeException(e);
 	} finally {
-	    if (fis != null) {
-		try {
-		    fis.close();
-		} catch (IOException localIOException2) {
-		}
-	    }
+	    close(fis);
 	}
     }
 
@@ -1281,20 +1289,8 @@ public class FileUtil {
 	} catch (Exception ex) {
 	    throw new ShipSuiteRuntimeException(ex);
 	} finally {
-	    if (bufferReader != null) {
-		try {
-		    bufferReader.close();
-		    bufferReader = null;
-		} catch (IOException localIOException2) {
-		}
-	    }
-	    if (inputStreamReader != null) {
-		try {
-		    inputStreamReader.close();
-		    inputStreamReader = null;
-		} catch (IOException localIOException3) {
-		}
-	    }
+	    close(bufferReader);
+	    close(inputStreamReader);
 	}
     }
 
@@ -1339,20 +1335,8 @@ public class FileUtil {
 	} catch (Exception ex) {
 	    throw new ShipSuiteRuntimeException(ex);
 	} finally {
-	    if (bufferReader != null) {
-		try {
-		    bufferReader.close();
-		    bufferReader = null;
-		} catch (IOException localIOException2) {
-		}
-	    }
-	    if (inputStreamReader != null) {
-		try {
-		    inputStreamReader.close();
-		    inputStreamReader = null;
-		} catch (IOException localIOException3) {
-		}
-	    }
+	    close(bufferReader);
+	    close(inputStreamReader);
 	}
     }
 
@@ -1373,12 +1357,7 @@ public class FileUtil {
 	} catch (Exception e) {
 	    throw new ShipSuiteRuntimeException(e);
 	} finally {
-	    try {
-		if (fos != null) {
-		    fos.close();
-		}
-	    } catch (IOException localIOException) {
-	    }
+	    close(fos);
 	}
 	return rtn;
     }
@@ -1410,16 +1389,8 @@ public class FileUtil {
 	} catch (IOException e) {
 	    throw new ShipSuiteRuntimeException(e);
 	} finally {
-	    try {
-		if (inputStream != null) {
-		    inputStream.close();
-		}
-		if (fileOutputStream != null) {
-		    fileOutputStream.close();
-		}
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    close(inputStream);
+	    close(fileOutputStream);
 	}
     }
 
@@ -1463,18 +1434,8 @@ public class FileUtil {
 	} catch (IOException e) {
 	    throw new ShipSuiteRuntimeException(e);
 	} finally {
-	    try {
-		if (bufferWriter != null) {
-		    bufferWriter.close();
-		}
-	    } catch (IOException localIOException1) {
-	    }
-	    try {
-		if (outputStreamWriter != null) {
-		    outputStreamWriter.close();
-		}
-	    } catch (IOException localIOException2) {
-	    }
+	    close(bufferWriter);
+	    close(outputStreamWriter);
 	}
     }
 
@@ -1491,7 +1452,7 @@ public class FileUtil {
 	    InputStream input = new FileInputStream(file);
 	    return input.available();
 	} catch (Exception e) {
-	    throw new FileNotFoundException("File NOT FOUND！");
+	    throw new FileNotFoundException("File NOT FOUND!");
 	}
     }
 
@@ -1531,7 +1492,7 @@ public class FileUtil {
     }
 
     /**
-     * 返回一个文件的大小
+     * 返回一个文件的大小(单位:字节)
      * 
      * @param filePath
      * @return
@@ -1548,7 +1509,7 @@ public class FileUtil {
     }
 
     /**
-     * 获取文件或目录大小
+     * 获取文件或目录大小(单位：字节)
      * 
      * @param path
      * @return
@@ -1604,10 +1565,6 @@ public class FileUtil {
     }
 
     /*********************************** 文件编码 **********************/
-    public static void is() {
-
-    }
-
     /**
      * 根据文件名获取文件编码
      * 
@@ -1675,7 +1632,12 @@ public class FileUtil {
 	    }
 	}
     }
-
+    
+    /**
+     * 根据URL获取文件编码
+     * @param url	url地址 
+     * @return		文件编码
+     */
     public static String getFileEncode(URL url) {
 	CodepageDetectorProxy detector = CodepageDetectorProxy.getInstance();
 
@@ -1740,7 +1702,13 @@ public class FileUtil {
     public static String getSystemTempPath() {
 	return System.getProperty("java.io.tmpdir");
     }
-
+    
+    /**
+     * 获取真实路径
+     * @param baseDirectory	目录路径
+     * @param filename		文件名
+     * @return
+     */
     public static String getRelativePath(String baseDirectory, String filename) {
 	int pathIndex = filename.indexOf(baseDirectory);
 	if (pathIndex >= 0) {
@@ -1844,7 +1812,7 @@ public class FileUtil {
 	    input = new FileInputStream(file);
 	    File newFile = new File(path + "/" + fileName);
 	    output = new FileOutputStream(newFile);
-	    byte[] bytes = new byte[2048];
+	    byte[] bytes = new byte[BUFFER_SIZE];
 	    int len;
 	    while ((len = input.read(bytes)) != -1) {
 		output.write(bytes, 0, len);
@@ -1852,17 +1820,8 @@ public class FileUtil {
 	} catch (Exception e) {
 
 	} finally {
-	    try {
-		if (null != output) {
-		    output.flush();
-		    output.close();
-		}
-		if (null != input) {
-		    input.close();
-		}
-	    } catch (IOException e) {
-		e.printStackTrace();
-	    }
+	    close(output);
+	    close(input);
 	}
     }
 
@@ -2079,7 +2038,13 @@ public class FileUtil {
 	} catch (IOException e) {
 	}
     }
-
+    
+    /**
+     * 在目录下查询所有文件
+     * @param rootDir	目录路径
+     * @param pattern	匹配模式
+     * @return		文件集合
+     */
     public static Set<File> findMatchingFileSystemResources(File rootDir,
 	    String pattern) {
 	if (!rootDir.exists()) {
@@ -2137,18 +2102,15 @@ public class FileUtil {
 	    }
 	}
     }
-
+    
+    /**
+     * 在目录下查询所有文件
+     * @param rootDir	目录路径
+     * @param pattern	匹配模式
+     * @return		文件集合
+     */
     public static Set<File> findMatchingFileSystemResources(String rootDir,
 	    String pattern) {
 	return findMatchingFileSystemResources(new File(rootDir), pattern);
-    }
-
-    public static void main(String[] args) {
-	System.out.println(getFilenameExtend("a.txt"));
-	System.out.println(getFilenameMain("a.txt"));
-	System.out.println(getPureFilename("c:\\a.txt"));
-	System.out.println(getPathOfFile("D:\\tt\\e.txt"));
-	System.out.println(bytesTokb(1024));
-	System.out.println(convertFileSize(1024 * 1024));
     }
 }

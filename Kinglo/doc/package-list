@@ -16,12 +16,11 @@ com.common.util.common
 com.common.util.compare
 com.common.util.concurrent
 com.common.util.database
-com.common.util.dump
+com.common.util.date
 com.common.util.email
-com.common.util.fax
+com.common.util.excel
 com.common.util.file
 com.common.util.ftp
-com.common.util.fulltext
 com.common.util.generic
 com.common.util.hardware
 com.common.util.hibernate
@@ -38,6 +37,7 @@ com.common.util.zip
 com.example
 com.example.arithmetic
 com.example.file
+com.example.fulltext
 com.example.number
 com.example.reflect
 com.example.string
@@ -50,7 +50,6 @@ com.test.number
 com.test.proxy
 com.test.reflect
 com.test.serializable
-com.test.time
 com.test.util.bean
 com.test.util.compare
 com.test.util.email

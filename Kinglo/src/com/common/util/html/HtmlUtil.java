@@ -14,9 +14,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -26,10 +24,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-
 import com.common.exception.ShipSuiteRuntimeException;
-import com.common.util.fulltext.FulltextUtil;
 import com.common.util.string.StringUtil;
+import com.example.fulltext.FulltextUtil;
 
 public final class HtmlUtil {
     private static final String ENCODE_UTF8 = "UTF-8";

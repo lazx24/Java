@@ -1,12 +1,5 @@
 package com.common.util.file;
 
-import com.common.exception.ShipSuiteRuntimeException;
-import com.common.util.generic.DateUtil;
-import com.common.util.html.JavaScriptUtil;
-import com.itextpdf.text.pdf.PdfCopy;
-import com.itextpdf.text.pdf.PdfImportedPage;
-import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.PdfStamper;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
@@ -16,9 +9,20 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
 import javax.imageio.ImageIO;
+
 import org.apache.pdfbox.util.PDFMergerUtility;
+
+import com.common.exception.ShipSuiteRuntimeException;
+import com.common.util.date.DateUtil;
+import com.common.util.html.JavaScriptUtil;
+import com.itextpdf.text.pdf.PdfCopy;
+import com.itextpdf.text.pdf.PdfImportedPage;
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.PdfStamper;
 
 public final class PDFUtil {
     
@@ -319,7 +323,7 @@ public final class PDFUtil {
     public static void encryp(String pdfFile, String userPassWord,
 	    String ownerPassWord, int permission) {
 	String tempFile = FileUtil.getSystemTempPath()
-		+ DateUtil.getTimeStampDateString()
+		+ DateUtil.dateFormatToString(new Date(),DateUtil.MILLIONS_DATE_FORMAT)
 		+ FileUtil.getPureFilename(pdfFile);
 	PdfStamper stamper = null;
 	try {

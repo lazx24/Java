@@ -199,6 +199,6 @@ public class ApplicationContextUtil {
 	    String configKey) {
 	String webXmlPath = getServletContext().getRealPath(xmlConfigFilename);
 
-	return PropertyLoader.getXmlConfig(webXmlPath, configKey);
+	return "";
     }
 }

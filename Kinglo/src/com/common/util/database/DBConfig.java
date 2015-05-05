@@ -8,11 +8,9 @@ import java.util.Properties;
 import com.common.util.string.StringUtil;
 
 /**
- * 数据库配置文件类
- * 
- * @author zoujianhua
- * @time 2014-10-26
- * @version 1.0
+ * 类的描述:数据库配置文件类
+ * 创建时间:2015-5-5
+ * 创建人:邹建华
  */
 public class DBConfig {
 
@@ -51,7 +49,15 @@ public class DBConfig {
 
     private String password;
 
-    private String driverClass;
+    private String dbType;
+
+    public String getDbType() {
+        return dbType;
+    }
+
+    public void setDbType(String dbType) {
+        this.dbType = dbType;
+    }
 
     private int initPoolSize;
 
@@ -79,14 +85,6 @@ public class DBConfig {
 
     public void setPassword(String password) {
 	this.password = password;
-    }
-
-    public String getDriverClass() {
-	return driverClass;
-    }
-
-    public void setDriverClass(String driverClass) {
-	this.driverClass = driverClass;
     }
 
     public int getInitPoolSize() {
@@ -124,7 +122,7 @@ public class DBConfig {
 	    url = pps.getProperty("DB.url");
 	    username = pps.getProperty("DB.username");
 	    password = pps.getProperty("DB.password");
-	    driverClass = pps.getProperty("DB.driverClass");
+	    dbType = pps.getProperty("DB.dbType");
 	    initPoolSize = StringUtil.stringToInt(pps
 		    .getProperty("DB.initPoolSize"));
 	    incrementSize = StringUtil.stringToInt(pps

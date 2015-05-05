@@ -7,11 +7,10 @@ import java.util.List;
 import com.common.util.validator.ValidUtil;
 
 /**
- * 数组辅助类
  * 
- * @author zoujianhua
- * @time 2014-10-20
- * @version 1.0
+ * 类的描述:数组辅助类
+ * 创建时间:2015-5-5
+ * 创建人:邹建华
  */
 public class ArrayUtil {
 
@@ -58,10 +57,8 @@ public class ArrayUtil {
 
     /**
      * 显示字符串数组的内容，用,分隔
-     * 
-     * @param args
-     *            字符串数组
-     * @return 字符串数组的内容
+     * @param args	字符串数组
+     * @return 		字符串数组的内容
      */
     public static String toString(String[] args) {
 	return toString(args, ",");
@@ -69,12 +66,9 @@ public class ArrayUtil {
 
     /**
      * 显示字符串数组的内容
-     * 
-     * @param args
-     *            字符串数组
-     * @param separator
-     *            分隔符
-     * @return 字符串数组的内容
+     * @param args	字符串数组
+     * @param separator	分隔符
+     * @return 		字符串数组的内容
      */
     public static String toString(String[] args, String separator) {
 	if (ValidUtil.isEmpty(args)) {
@@ -92,10 +86,8 @@ public class ArrayUtil {
 
     /**
      * 取得数组的第一个元素
-     * 
-     * @param array
-     *            数组
-     * @return 数组的第一个元素
+     * @param array	数组
+     * @return 		数组的第一个元素
      */
     public static <T> T getFirst(T[] array) {
 	if (array == null || array.length == 0) {
@@ -106,12 +98,9 @@ public class ArrayUtil {
 
     /**
      * 判断数组是否包含指定的对象
-     * 
-     * @param array
-     *            数组
-     * @param str
-     *            指定的对象
-     * @return 包含true，否则false
+     * @param array	数组
+     * @param str	指定的对象
+     * @return 		包含true，否则false
      */
     public static <T> boolean contains(T[] array, T str) {
 
@@ -129,10 +118,8 @@ public class ArrayUtil {
 
     /**
      * 把数组转换成 列表，如果数组为 null，则会返回一个空列表。
-     * 
-     * @param array
-     *            数组
-     * @return 列表对象
+     * @param array 	数组
+     * @return 		列表对象
      */
     public static <T> List<T> toList(T[] array) {
 	ArrayList<T> list = new ArrayList<T>();
@@ -148,12 +135,9 @@ public class ArrayUtil {
 
     /**
      * 联合两个数组
-     * 
-     * @param first
-     *            第一个数组
-     * @param last
-     *            另一个数组
-     * @return 内容合并后的数组
+     * @param first 	第一个数组
+     * @param last 	另一个数组
+     * @return 		内容合并后的数组
      */
     public static Object[] combine(Object[] first, Object[] last) {
 	if (first.length == 0 && last.length == 0) {

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import com.common.util.date.DateUtil;
+
 public final class CronGenerator {
     public static String getDailyCronSetting(int hour, int min) {
 	StringBuffer cronSetting = new StringBuffer();
